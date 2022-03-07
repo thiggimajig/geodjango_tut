@@ -1,0 +1,17 @@
+<!-- possible child template from simple django tutorial https://docs.djangoproject.com/en/4.0/ref/templates/language/ -->
+{% extends "base.html" %}
+{% block title %}Airbnb Listings{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Geo Map</h1>
+<div id="map" style="width: 100%; height: 600px">
+    {{map | safe}} 
+</div>
+
+{% for listing in allpoints %}
+    <h2>{{listing.name }}</h2>
+    <p>{{ listing.price }}</p>
+    <p>({{listing.latitude}}, {{listing.longitude}})</p>
+
+{% endfor %}
+{% endblock %}

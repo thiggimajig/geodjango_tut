@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'volt.css' %}">
+    <title>{% block title %}My amazing site{% endblock %}</title>
+</head>
+
+<body>
+    <div id="sidebar">
+        {% block sidebar %}
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/blog/">Map of Florence</a></li>
+            <li><a href="/blog/">Policy Explorer Map</a></li>
+            <li><a href="/blog/">Policy Options</a></li>
+            <li><a href="/blog/">Hosts with the most listings</a></li>
+            <li><a href="/blog/">Hosts with the highest earnings</a></li>
+        </ul>
+        {% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -11,11 +11,16 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+#BASE_DIR = Path(__file__).resolve().parent.parent
+#from RAJVEL plain english
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
+#added from stack https://stackoverflow.com/questions/1926049/django-templatedoesnotexist 
+# SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
+SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -38,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'world'
+    'world',
+    'csvimport.app.CSVImportConf'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +62,10 @@ ROOT_URLCONF = 'geodjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        ## Find templates in the same folder as settings.py.
+        #https://stackoverflow.com/questions/1926049/django-templatedoesnotexist
+        # 'DIRS': [os.path.join(SETTINGS_PATH, 'templates')],
+        'DIRS': [SETTINGS_PATH + 'templates'], #BASE_DIR + '/templates/' from RAJVEL example
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
