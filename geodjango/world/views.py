@@ -1,3 +1,4 @@
+#where stuff happens functions happen on data from database from models.py
 from django.shortcuts import render
 from django.views import generic
 from django.contrib.gis.geos import fromstr, Point
@@ -21,6 +22,7 @@ def allpoints(request):
     folium.raster_layers.TileLayer('CartoDB Positron').add_to(map)
     folium.LayerControl().add_to(map)    
     allpoints=AirbnbListings.objects.all()
+    print(type(allpoints))
     names=[i for i in allpoints]
     name=[i.name for i in names]
     price = [i.price for i in names]
@@ -36,7 +38,15 @@ def allpoints(request):
 
 def index(request):
     return render(request, "index.html")
-
+def policy(request):
+    #TODO for later if we think we want to... or just import the df0... then do the map creation here
+    # policy1_df0 = (df0.loc[df0['has_liscense'] == 0])
+    # updated_bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo) 
+    # folium.LayerControl().add_to(updated_bub_map)
+    # for index, location_info in datadf.iterrows():
+    #     folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="crimson", fill=True, fill_color ="crimson",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue"])).add_to(updated_bub_map)
+    # updated_map = 'unsure
+    return render(request,"policy4_df0_funct_map.html") #{"updated_map":updated_map}
 def map(request):
     m = folium.Map()
     # m.save("map_firenze.html")

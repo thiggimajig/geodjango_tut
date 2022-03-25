@@ -1,3 +1,5 @@
+#where you hook it up so urls connects to view which is connected to template and pulling from model 
+
 """geodjango URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -19,14 +21,14 @@ Including another URLconf
 # from django.contrib import admin
 from django.contrib.gis import admin
 from django.urls import path
-from world.views import allpoints, map, index, listings_map
+from world.views import allpoints, map, index, policy, listings_map
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('allpoints', allpoints, name = 'allpoints'),
     path('index', index, name='index'),
     path('map', map, name='map'),
-    path('world', listings_map, name = 'listings-map')
-    #path('', views.AirbnbListings.as_view())
-    # path('map/', )
+    path('policyexplorer', policy, name='policyexplorer'),
+    path('Connect', listings_map, name = 'listings-map')
+    # listings/ (can be whatever you want the url to be), listings_map (function name in view), 
 ]

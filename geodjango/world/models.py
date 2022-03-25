@@ -1,3 +1,5 @@
+#where it all starts, uploading data into database via a model
+#TODO figure out if its best practice to keep my processing and policy functions separate...when do i import them into the model? should i make a new app for that? 
 # from django.db import models
 from django.contrib.gis.db import models
 # This is an auto-generated Django model module created by ogrinspect.
