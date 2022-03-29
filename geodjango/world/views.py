@@ -46,7 +46,7 @@ def policy(request):
     # for index, location_info in datadf.iterrows():
     #     folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="crimson", fill=True, fill_color ="crimson",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue"])).add_to(updated_bub_map)
     # updated_map = 'unsure
-    return render(request,"policy4_df0_funct_map.html") #{"updated_map":updated_map}
+    return render(request,"policy.html") #{"updated_map":updated_map} #"policy4_df0_funct_map.html"
 def map(request):
     m = folium.Map()
     # m.save("map_firenze.html")
