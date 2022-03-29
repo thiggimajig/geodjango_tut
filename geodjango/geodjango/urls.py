@@ -21,7 +21,7 @@ Including another URLconf
 # from django.contrib import admin
 from django.contrib.gis import admin
 from django.urls import path
-from world.views import allpoints, map, index, policy, listings_map
+from world.views import allpoints, map, index, policy, listings_map, policyone, policytwo, policythree, starting_map
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +29,11 @@ urlpatterns = [
     path('index', index, name='index'),
     path('map', map, name='map'),
     path('policyexplorer', policy, name='policyexplorer'),
-    path('Connect', listings_map, name = 'listings-map')
+    path('Connect', listings_map, name = 'listings-map'),
+    #adding new mvp templates
+    path('PolicyOne', policyone, name='policyone'),
+    path('PolicyTwo', policytwo, name='policytwo'),
+    path('PolicyThree', policythree, name='policythree'),
+    path('StartingMap', starting_map, name='startingmap')
     # listings/ (can be whatever you want the url to be), listings_map (function name in view), 
 ]

@@ -20,7 +20,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- Primary Meta Tags -->  
-    
     <title>{% block title %}Airbnb Thesis MVP App{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="title" content="Volt - Free Bootstrap 5 Dashboard">
@@ -61,24 +60,22 @@
     {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
-
 <body>
     <!-- for sidebar navigation thingy -->
     {% include 'includes/sidebar.html' %} 
     <!-- <div id="sidebar"> -->
-
         <!-- <ul>
             <li><a href="/index">Home</a></li>
             <li><a href="/map">Assess: Map of Airbnb's in Florence</a></li>
             <li><a href="/policyexplorer">Analyze: Policy Explorer Map</a></li>
             <li><a href="/Connect">Organize: Connect to the Community</a></li> -->
         <!-- </ul> -->
-
     <!-- </div> -->
+    
     <main class="content">
         {% block content %}{% endblock %}
         {% include 'includes/settings-box.html' %}
-        {%include 'includes/footer.html' %}
+        {% include 'includes/footer.html' %}
     </main>
 
     <!-- js file  -->
