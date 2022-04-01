@@ -1,13 +1,12 @@
 {% extends "base.html" %}
-#what do block titles do?
-{% block title %}Starting Map{% endblock %}
-#does this just pick up anything that has rel=stylesheet? 
-{% block stylesheets %}{% endblock stylesheets %}
-#indicates content is coming 
-{% block content %}
-# add dashboard info or extend it from base?
 
-#ends content block
+{% block title %}Starting Map{% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+{% include '../home/dashboard.html' %}
 {% endblock %}
 
 <!-- Specific Page JS goes HERE  -->

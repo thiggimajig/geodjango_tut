@@ -9,18 +9,29 @@ from folium.features import CustomIcon
 import csv
 from IPython.display import display, HTML
 from pathlib import Path 
+import os
+import sys
+data_path = os.path.abspath('/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/data/')
+sys.path.append(data_path)
+# sys.path.append("/geodjango/world/data/policy_functions")
+#example of absolute path settting for file... 
+# dirpath = os.path.dirname(os.path.abspath(__file__))
+# chap_dirpath = os.path.join(dirpath, chap_dirpath)
+
+esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
+attrib = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
 
 #load up csv file into df
 def load_csv_data(ia):
     ia_df = pd.read_csv(ia)
     return ia_df
-# df = load_csv_data('../thesis_app/Out_CSV/ia_1_27_222022_03_23_18_40_54_new_variables.csv')
+df = load_csv_data(data_path + '/test_file.csv')
 
 def clean_dataframe(s):
     columns_df0 = ['id', 'has_liscense', 'days_rented', 'rounded_revenue', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude']
     cleaned_df = s.loc[:,columns_df0]
     return cleaned_df
-# df0 = clean_dataframe(df)
+df0 = clean_dataframe(df)
 
 def create_specific_dataframes(s):
     #policy1 df
@@ -62,7 +73,6 @@ def ltr_stats(datadf):
     # entire units LTR, bedroom count LTR 
     returned_units_entire = datadf.loc[datadf['is_entire']==1].shape[0]
     returned_units_bedrooms = datadf['bedrooms'].agg('sum')
-
     return returned_units_entire, returned_units_bedrooms
 
 
@@ -95,24 +105,18 @@ def feetax_stats(datadf, datadfcomm, datadfnocomm):
 # feestats_list = feetax_stats(policy1_df0, policy1_df0_comm, policy1_df0_nocomm)
 
 
-esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
-attrib = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
-
 def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
     #create bubble map
     bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo) 
     folium.LayerControl().add_to(bub_map)
-    #TODOD change 1 to yes and had total listings and if in florence and make more maps for commercial and not in florence 
+    # TODO change 1 to yes and had total listings and if in florence and make more maps for commercial and not in florence 
     for index, location_info in mapdf.iterrows():
         folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="black", fill=True, fill_color ="black",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue"])).add_to(bub_map)
-    
-    bub_map.save('Out_Map/' + filetitle + '.html')
+    bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
     return bub_map
 #original_airbnb_map(mapdf, datadf, tileinfo)
 # original_airbnb_map(df0, esri, attrib, 'original_airbnb_map')
 
-esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
-attrib = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
 
 def updated_airbnb_map(mapdf, datadf, inverse_datadf, tileinfo, attribinfo, filetitle):
     #create updated bubble map after clicking certain policy x
@@ -125,10 +129,38 @@ def updated_airbnb_map(mapdf, datadf, inverse_datadf, tileinfo, attribinfo, file
     
     for index, location_info in inverse_datadf.iterrows():
         folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill=True, fill_color ="blue",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue"])).add_to(updated_bub_map)
-    updated_bub_map.save('Out_Map/' + filetitle + '.html')
+    updated_bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
 
     return updated_bub_map
 # updated_airbnb_map(df0, policy4_df0, policy4_df0_inverse, esri, attrib, 'policy4_df0_funct')
 
+# Test function for module  
+def _test():
+    pass
+    # assert as_int('1') == 1
+    #assert function value input equals certain expected value if function working
+    
+bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
+
+def getbubmaps():
+    df = load_csv_data(data_path + '/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
+    df0 = clean_dataframe(df)
+    policy1_df0, policy1_df0_inverse, policy1_df0_comm, policy1_df0_nocomm, policy2_df0, policy2_df0_inverse, policy3_df0, policy3_df0_inverse, policy4_df0, policy4_df0_inverse = create_specific_dataframes(df0)
+    # basic_stats_df0 = stats(df0)
+    # feestats_list = feetax_stats(policy1_df0, policy1_df0_comm, policy1_df0_nocomm)
+    bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
+    updatedbubmap = updated_airbnb_map(df0, policy1_df0, policy1_df0_inverse, esri, attrib, 'policy1_df0_funct_script')
+    # updated_stats = updated_stats(policy1_df0, policy1_df0_inverse) 
+    # ltr_stats = ltr_stats(policy1_df0) 
+    #MUST RETURN THINGS!!!! 
+    return updatedbubmap
+def get_orig_map():
+    bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
+    return bubmap
+
+#only need if running this as a script not importing
+# def main():
+# if __name__ == '__main__':
+#     main()
 
 

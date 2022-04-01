@@ -6,7 +6,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db import models
 #headers listing_number,id,listing_url,name,host_id,host_name,host_since,host_location,host_total_listings_count,neighbourhood_cleansed,latitude,longitude,room_type,accommodates,bedrooms,price,availability_30,availability_60,availability_90,availability_365,number_of_reviews_ltm,number_of_reviews_l30d,license,instant_bookable,calculated_host_listings_count,reviews_per_month,days_rented,rounded_revenue,is_hotel,is_entire,many_listings,only_1_listing,only_2_listings,host_florence,has_liscense,is_instant_bookable,global_total_listings,dist_duomo
 # This is an auto-generated Django model module created by ogrinspect.
-class AirbnbListings(models.Model):
+class AirbnbListings(models.Model): #issues here ... 
 # Regular Django fields corresponding to the attributes in the IA csv file
     listing_number = models.IntegerField()
     id = models.IntegerField(primary_key=True)

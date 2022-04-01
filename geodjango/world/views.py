@@ -3,23 +3,23 @@ from django.shortcuts import render
 from django.views import generic
 from django.contrib.gis.geos import fromstr, Point
 from django.contrib.gis.db.models.functions import Distance
-from .models import AirbnbListings
+#not sure but having issues relatively importing.. .maybe when server is down?
+from .models import AirbnbListings 
 from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-from .policy_functions import stats, updated_stats, ltr_stats, feetax_stats, original_airbnb_map, updated_airbnb_map 
 import folium
 import pandas as pd
-import numpy as np
-import statistics as st
-import matplotlib as plt
-# Create your views here. 
-# following this tutorial https://python.plainenglish.io/build-geodjango-webapp-to-store-and-query-locations-91637d485a37
-#remember exchanged points for AirbnbListings and description for price
+import sys
+import os
+function_path = os.path.abspath('/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/')
+sys.path.append(function_path)
+from . import policy_functions as pf
+
 
 #this one allpoints is working so lets go with it
 def allpoints(request):
     #create map
-    map = folium.Map(location=[43.7696, 11.2558], zoom_start=7)
+    map = folium.Map(location=[43.7696, 11.2558], zoom_start=15)
     # folium.Marker(location=[]).add_to(map)
     #styles of map
     folium.raster_layers.TileLayer('Stamen Toner').add_to(map)
@@ -27,19 +27,19 @@ def allpoints(request):
     folium.raster_layers.TileLayer('CartoDB Positron').add_to(map)
     folium.LayerControl().add_to(map)    
     allpoints=AirbnbListings.objects.all()
-    print(type(allpoints))
+    # print(type(allpoints))
     names=[i for i in allpoints]
-    name=[i.name for i in names]
-    price = [i.price for i in names]
-    lat = [i.latitude for i in names]
-    long = [i.longitude for i in names]
+    # name=[i.name for i in names]
+    # price = [i.price for i in names]
+    # lat = [i.latitude for i in names]
+    # long = [i.longitude for i in names]
     for i in names:
         marker = [i.latitude, i.longitude]
         folium.CircleMarker(location=marker, tooltip=i.name, popup=i.price).add_to(map)
     #create html version of map
     map = map._repr_html_()
     #coords = [(lat for i in names) , (long for i in names)]
-    return render(request,'allpoints.html',{'allpoints':allpoints,'name':name, 'price':price, 'map':map, 'lat':lat,'long':long})
+    return render(request,'allpoints.html',{'allpoints':allpoints,'map':map})
     #(request, template.html, {variables to pass through})
 def index(request):
     return render(request, "index.html")
@@ -54,17 +54,24 @@ def policy(request):
     # updated_map = 'unsure
     return render(request,"policy.html") #{"updated_map":updated_map} #"policy4_df0_funct_map.html"
 
-#ok let's make one policy def where we make all the new dataframes
-#then a separate def for each map creation manipulation of the dataframes 
-
 def policyone(request):
-    return render(request,"mvp_temps/policy1.html")
+    updatedmap = pf.getbubmaps() 
+    return render(request,"mvp_temps/policy1.html", {"map":updatedmap})
 def policytwo(request):
     return render(request,"mvp_temps/policy2.html")
 def policythree(request):
     return render(request,"mvp_temps/policy3.html")
 def starting_map(request):
-    return render(request,"mvp_temps/starting_map.html")
+    # should be able to access ALL variables from policy_functions... so will just display that map here
+    # just need to figure out the import issue 
+    #then in dashboard it'll use this map variable specific to each template... perfect 
+    map, updatedmap, updatedstats = pf.getbubmaps() 
+
+    # map = pf.bub_map 
+    # map = map._repr_html_()
+    # stats = [1,2,3]
+    return render(request,"mvp_temps/starting_map.html", {"originalmap":map, "updatedmap": updatedmap, "updatedstats": updatedstats}) #{"originalmap":map, "stats": stats}
+# starting_map(original_airbnb_map, stats)
 
 def map(request):
     map = folium.Map(location=[43.7696, 11.2558], zoom_start=10)
@@ -80,7 +87,7 @@ def map(request):
         # 'name': name
         'm': map,
     }
-    return render(request, "map.html", context) #{'allpoints':queryset,'name':name,'lat':lat,'long':long}
+    return render(request, "map.html", {'context':context}) #{'allpoints':queryset,'name':name,'lat':lat,'long':long}
 
 def listings_map(request):
     all_listings = AirbnbListings.objects.all()
