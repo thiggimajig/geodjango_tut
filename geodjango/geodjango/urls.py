@@ -24,16 +24,13 @@ from django.urls import path
 from world.views import allpoints, map, index, policy, listings_map, policyone, policytwo, policythree, starting_map
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('allpoints', allpoints, name = 'allpoints'),
-    path('index', index, name='index'),
-    path('map', map, name='map'),
-    path('policyexplorer', policy, name='policyexplorer'),
-    path('Connect', listings_map, name = 'listings-map'),
-    #adding new mvp templates
+    path('StartingMap', starting_map, name='startingmap'),
     path('PolicyOne', policyone, name='policyone'),
     path('PolicyTwo', policytwo, name='policytwo'),
     path('PolicyThree', policythree, name='policythree'),
-    path('StartingMap', starting_map, name='startingmap')
+    path('policyexplorer', policy, name='policyexplorer'),
+    path('index', index, name='index'),
+    path('admin/', admin.site.urls)
     # listings/ (can be whatever you want the url to be), listings_map (function name in view), 
 ]
