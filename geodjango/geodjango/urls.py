@@ -15,13 +15,11 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-#following this tutorial https://python.plainenglish.io/build-geodjango-webapp-to-store-and-query-locations-91637d485a37
-# remember exchanged points for AirbnbListings and description for price 
 
 # from django.contrib import admin
 from django.contrib.gis import admin
 from django.urls import path
-from world.views import allpoints, map, index, policy, listings_map, policyone, policytwo, policythree, starting_map
+from world.views import allpoints,starting_map, policyone, policytwo, policythree, index, policy
 
 urlpatterns = [
     path('allpoints', allpoints, name = 'allpoints'),
