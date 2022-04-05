@@ -19,16 +19,25 @@ Including another URLconf
 # from django.contrib import admin
 from django.contrib.gis import admin
 from django.urls import path
-from world.views import allpoints,starting_map, policyone, policytwo, policythree, index, policy
+from world.views import allpoints,starting_map, policyone, policytwo, policythree, index, policy, timelapse, about, organize, quiz, terms, method
 
 urlpatterns = [
+    #maps
     path('allpoints', allpoints, name = 'allpoints'),
-    path('StartingMap', starting_map, name='startingmap'),
-    path('PolicyOne', policyone, name='policyone'),
-    path('PolicyTwo', policytwo, name='policytwo'),
-    path('PolicyThree', policythree, name='policythree'),
+    path('startingmap', starting_map, name='startingmap'),
+    path('policyone', policyone, name='policyone'),
+    path('policytwo', policytwo, name='policytwo'),
+    path('policythree', policythree, name='policythree'),
     path('policyexplorer', policy, name='policyexplorer'),
-    path('index', index, name='index'),
+    path('timelapse', timelapse, name='timelapse'),
+    #nonmap
+    path('quiz', quiz, name='quiz'),
+    path('terms', terms, name='terms'),
+    path('about', about, name='about'),
+    path('organize', organize, name='organize'),
+    path('methodology', method, name ='method'),
+    #random ones
+    path('', index, name='index'),
     path('admin/', admin.site.urls)
     # listings/ (can be whatever you want the url to be), listings_map (function name in view), 
 ]

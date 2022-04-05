@@ -137,7 +137,12 @@ def _test():
     pass
     # assert as_int('1') == 1
     #assert function value input equals certain expected value if function working
-    
+def get_orig_map():
+    df = load_csv_data(data_path + '/csv_ia/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
+    df0 = clean_dataframe(df)
+    bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
+    return bubmap
+  
 
 def getbubmaps():
     df = load_csv_data(data_path + '/csv_ia/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
@@ -149,7 +154,6 @@ def getbubmaps():
     updatedbubmap_1 = updated_airbnb_map(df0, policy1_df0, policy1_df0_inverse, esri, attrib, 'policy1_df0_funct_script')
     updatedbubmap_2 = updated_airbnb_map(df0, policy2_df0, policy2_df0_inverse, esri, attrib, 'policy2_df0_funct_script')
     updatedbubmap_3 = updated_airbnb_map(df0, policy3_df0, policy3_df0_inverse, esri, attrib, 'policy3_df0_funct_script')
-
     # updated_stats = updated_stats(policy1_df0, policy1_df0_inverse) 
     # ltr_stats = ltr_stats(policy1_df0) 
     #MUST RETURN THINGS!!!! 
@@ -157,12 +161,104 @@ def getbubmaps():
     bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
     return bubmap, updatedbubmap_1, updatedbubmap_2, updatedbubmap_3
 
-def get_orig_map():
-    df = load_csv_data(data_path + '/csv_ia/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
-    df0 = clean_dataframe(df)
-    bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
-    return bubmap
+def popup_html(row):
+    # html ="hello"  #this worked, we can do this. niente
+    # html = row #this also worked, we can do this! i
+    # html = row_price #this ALSO worked, we can def do this!! i.price
+    
+    #here we declare all variables from model
+    host_id = row.host_id #dummy id #should work... row.host_id
+    host_name = row.host_name
+    host_since = row.host_since
+    host_location = row.host_location
+    license = row.license
+    host_total_listings_count = row.host_total_listings_count
+    global_total_listings = row.global_total_listings
+    listing_url = row.listing_url
+    listing_id = row.id
+    listing_name = row.name
+    neighbourhood_cleansed = row.neighbourhood_cleansed
+    dist_duomo = round(row.dist_duomo) #check if in meters or ft
+    room_type = row.room_type
+    bedrooms = row.bedrooms
+    accommodates = row.accommodates
+    rounded_revenue = round(row.rounded_revenue, 2)
+    monthly_rounded_revenue = round((rounded_revenue / 12), 2)
+    price = row.price
+    night_min = 2 #dummy placeholder
+    days_rented = round(row.days_rented, 2)
+    reviews_per_month = row.reviews_per_month
+    census_tract = 8972720.3 #dummy placeholder
+    number_listings_census = 40 #dummy placeholder
+    number_elderly_census = 20 #dummy placeholder 
+    number_single_parent_census = 10 #dummy placeholder 
+    rent_burden_census = "HIGH" #low, medium, high
+    census_homeowners = 33 #dummy placeholder
 
+    #here we create the html text 
+    html = """
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+<link href="http://fonts.googleapis.com/css?family=Lato:400,700,900" rel="stylesheet" type="text/css">
+<link href="static/ia_copy_tooltip.css" rel="stylesheet" type="text/css">
+</head>
+<div id="listingHover" class="pinned" style="left: 50px; visibility: visible; top: auto; bottom: 2px;">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeHover" style="visibility: visible;"><span aria-hidden="true">×</span></button>
+    <div class="hostDetailsContainer">
+        <p><a id="listingHost" target="_blank" href="http://www.airbnb.com/users/show/{}">""".format(host_id) + """{}</a>""".format(host_name) + """ ({}) </p>""".format(host_location) + """ 
+        <!-- want to say if have liscenese then show the number if not then say no liscnese illegal etc with django template can use if logic block -->
+        <p id="listingHostLicense"><span id="listingHostLicense">Hosting since: {}</span>""".format(host_since) + """</p>
+        <p id="listingHostLicense"><span id="listingHostLicense">{}</span>""".format(license) + """ No License </p>
+        <p id="listingHostCountContainer">(<span id="listingHostListingCount">{}</span>""".format(host_total_listings_count) + """ other listings locally)</p>
+        <p id="listingHostCountContainerGlobal">(<span id="listingHostListingCountGlobal">{}</span>""".format(global_total_listings) + """ other listings globally)</p>
+    </div>
+    <div class="listingDetailsContainer">
+        <p id="listingIDContainer"><a id="listingID" target="_blank" href={}>""".format(listing_url) + """ {}</a>""".format(listing_id) + """</p>
+        <p id="listingNameContainer"><a id="listingName" target="_blank" href={}>""".format(listing_url) + """{}</a>""".format(listing_name) + """</p>
+        <p id="listingNeighbourhood">{}</p>""".format(neighbourhood_cleansed) + """
+        <p id="listingNeighbourhoodDistDuomo">{} meters to the Duomo</p>""".format(dist_duomo) + """
+        <p id="listingRoomType">{} ({} bedrooms, accommodates {})</p>""".format(room_type, bedrooms, accommodates) + """
+    </div>
+    <div id="listingPriceSection" class="listingSection">
+        <p class="listingSectionHeadlineContainer">
+            <span class="listingSectionHeadline"><span class="dollarSign">€</span><span id="listingEstimatedIncomePerYear">{}</span>""".format(rounded_revenue) + """</span><span id="listingPriceLabel" class="listingSectionHeadlineLabel"> income/year (est.)</span>
+        </p>
+        <p <span class="listingSectionSubhead"><span class="dollarSign">€</span><span id="listingEstimatedIncomePerMonth">{}</span>""".format(monthly_rounded_revenue) + """</span><span id="listingPriceLabel" class="listingSectionSubhead"> income/month (est.)</span> </p>
+        <p class="listingSectionSubhead"><span class="dollarSign">€</span><span id="listingPrice">{}</span>""".format(price) + """/night</p>
+        <p class="listingSectionSubhead"><span id="listingMinimumNights">{}</span>""".format(night_min) + """ night minimum</p>
+    </div>
+    <div id="listingReviewsSection" class="listingSection">
+        <p class="listingSectionHeadlineContainer">
+            <span class="listingSectionSubhead"><span id="listingEstimatedNightsPerYear" class="listingSectionHeadline">{}</span>""".format(days_rented) + """<span class="listingSectionHeadlineLabel"> nights/year (est.)</span></span>
+        </p>
+        <!-- <p class="listingSectionSubhead"><span id="listingEstimatedOccupancyRate">23.4</span>% occupancy rate (est.)</p> -->
+        <p class="listingSectionSubhead"><span id="listingReviewPerMonth">{}</span>""".format(reviews_per_month) + """ reviews/month</p>
+        <!-- <p class="listingSectionSubhead"><span id="listingNumberOfReviews">5</span><span id="listingReviewsLabel"> reviews</span></p> -->
+        <!-- <p class="listingSectionSubhead">last: <span id="listingLastReview">31/10/2021</span></p> -->
+    </div>
+    <div id="listingCensusSection" class= "listingSection">
+    <p class="listingSeciotnHeadlineContainer">
+        <span id="listingCensusInfo" class="listingSectionHeadline">{}</span>""".format(rent_burden_census) + """<span class="listingSectionHeadlineLabel"> rent burden</span>
+    </p>
+    <p class="listingSectionSubhead"><span id="listingCensusId">Census Tract ID: {}</span>""".format(census_tract) + """</p>
+    <p class="listingSectionSubhead"><span id="listingHomeowner"> {}% of neighbors rent""".format(census_homeowners) + """% of block rents </span></p>
+    <p class="listingSectionSubhead"><span id="listingCensusNumberListing"> {}""".format(number_listings_census) + """% of block is on airbnb</span></p>
+    <p class="listingSectionSubhead"><span id="listingElderly"> {}""".format(number_elderly_census) + """% of neighbors are elderly</span></p>
+    <p class="listingSectionSubhead"><span id="listingParent"> {}""".format(number_single_parent_census) + """% of neighbors are single parent</span></p>
+
+    </div>
+    <!-- <div id="listingAvailabilitySection" class="listingSection">
+        <p class="listingSectionHeadlineContainer">
+            <span id="listingAvailabilityDescription" class="listingSectionHeadline">LOW</span><span class="listingSectionHeadlineLabel"> availability</span>
+        </p>
+        <p class="listingSectionSubhead"><span id="listingAvailability365">0</span> days/year (<span id="listingAvailabilityPercentage">0</span>%)</p>
+    </div> -->
+    <p class="listingSection">click listing on map to "pin" details</p>
+</div>
+</html>
+    """  
+    return html
 #only need if running this as a script not importing
 # def main():
 # if __name__ == '__main__':
