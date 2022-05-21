@@ -2,5 +2,6 @@
     "DockerRun.DisableDockerrc": true,
     "DockerRun.Containers": [
         "e6b8f9218344"
-    ]
+    ],
+    "livePreview.defaultPreviewPath": "/geodjango/htmlcov/world_models_py.html"
 }

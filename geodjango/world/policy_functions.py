@@ -11,6 +11,8 @@ from IPython.display import display, HTML
 from pathlib import Path 
 import os
 import sys
+from .models import AirbnbListings 
+# from models import AirbnbListings 
 data_path = os.path.abspath('/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/data/')
 sys.path.append(data_path)
 # sys.path.append("/geodjango/world/data/policy_functions")
@@ -18,21 +20,36 @@ sys.path.append(data_path)
 # dirpath = os.path.dirname(os.path.abspath(__file__))
 # chap_dirpath = os.path.join(dirpath, chap_dirpath)
 
+
 esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
 attrib = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
 
-#load up csv file into df
-def load_csv_data(ia):
-    ia_df = pd.read_csv(ia)
-    return ia_df
-# df = load_csv_data(data_path + 'csv_ia/test_file.csv')
+#TODO FOR REFACTOR: i think i need to atleast change the first two functions so that the data comes from the database not a csv file 
+#found this from ... https://stackoverflow.com/questions/11697887/converting-django-queryset-to-pandas-dataframe 
+#an alternative method # Convert Django's Queryset into a Pandas DataFrame: pricing_dataframe = pd.DataFrame.from_records(prices.values())
 
+def load_database_data():
+    df = pd.DataFrame(list(AirbnbListings.objects.all().values('id', 'has_liscense', 'days_rented_ltm', 'rounded_revenue_ltm', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude')))
+    print(df.head())
+    return df
+df = load_database_data()
+#load up csv file into df
+#here we are loading the data from a csv file... but we can just as easily do that from the model
+# def load_csv_data(ia):
+#     ia_df = pd.read_csv(ia)
+#     return ia_df
+# # df = load_csv_data(data_path + 'csv_ia/test_file.csv')
+
+#here we create the cleaned dataframe we want having dropped things we don't care about...but that'll change
 def clean_dataframe(s):
-    columns_df0 = ['id', 'has_liscense', 'days_rented', 'rounded_revenue', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude']
+    columns_df0 = ['id', 'has_liscense', 'days_rented_ltm', 'rounded_revenue_ltm', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude']
     cleaned_df = s.loc[:,columns_df0]
     return cleaned_df
-# df0 = clean_dataframe(df)
+df0 = clean_dataframe(df)
 
+
+#here from that cleaned data frame i make dataframes with data specific for each policy function...
+#but i can instead make the dataframes with specific data by looping through the model database data
 def create_specific_dataframes(s):
     #policy1 df
     no_lisc_df0 = (s.loc[s['has_liscense'] == 0])
@@ -46,13 +63,12 @@ def create_specific_dataframes(s):
     #policy3 df
     many_listings_df0 = (s.loc[s['many_listings'] == 1])
     not_many_listings_df0 = (s.loc[s['many_listings'] == 0])
-    #policy4 df #needs to be better, not just available, has to also be frequently used... but to get frequently used have to see if new or old, new use last month, old use last year pre and post covid 
-    cap_days_df0 = (s.loc[s['availability_365'] > 90])
-    not_cap_days_df0 = (s.loc[s['availability_365'] < 90])
-    return no_lisc_df0, lisc_df0, comm_no_lisc_df0, nocomm_no_lisc_df0, entire_df0, not_entire_df0, many_listings_df0, not_many_listings_df0, cap_days_df0, not_cap_days_df0
 
-# policy1_df0, policy1_df0_inverse, policy1_df0_comm, policy1_df0_nocomm, policy2_df0, policy2_df0_inverse, policy3_df0, policy3_df0_inverse, policy4_df0, policy4_df0_inverse = create_specific_dataframes(df0)
+    return no_lisc_df0, lisc_df0, comm_no_lisc_df0, nocomm_no_lisc_df0, entire_df0, not_entire_df0, many_listings_df0, not_many_listings_df0
 
+policy1_df0, policy1_df0_inverse, policy1_df0_comm, policy1_df0_nocomm, policy2_df0, policy2_df0_inverse, policy3_df0, policy3_df0_inverse = create_specific_dataframes(df0)
+
+#here i create basic stats from the entire data...but if i can loop through all rows in the model i can accomplish this or I can use the new dataframes with the model data if we go that route
 def stats(dataframe):
     #calculate stats for given area before any regulation
     fi_stats = []
@@ -60,14 +76,14 @@ def stats(dataframe):
     count_of_bedrooms = dataframe['bedrooms'].agg('sum')
     fi_stats.append(count_of_listings)
     fi_stats.append(count_of_bedrooms)
-
     return fi_stats
-# basic_stats_df0 = stats(df0)
+basic_stats_df0 = stats(df0)
 
 def updated_stats(datadf, datadfinverse):
     count_listings_effected = datadf.shape[0]
     count_listings_not_effected = datadfinverse.shape[0]
     return count_listings_effected, count_listings_not_effected
+
 
 def ltr_stats(datadf):
     # entire units LTR, bedroom count LTR 
@@ -80,6 +96,7 @@ def feetax_stats(datadf, datadfcomm, datadfnocomm):
     #fees 
     feestats = []
     # -non comm fee collection (count based on other cities)
+    #could be cool to allow user input for this instead of hardcoded 30 and 60
     yearly_fee_nolisc = (datadfnocomm.shape[0] * 30)
     # -commercial fee collection 
     yearly_fee_nolis_comm = (datadfcomm.shape[0] * 60)
@@ -87,14 +104,15 @@ def feetax_stats(datadf, datadfcomm, datadfnocomm):
     #taxes 
     # -tax rev increase normal 21% for all 
     # yearly_revenue_nolisc = datadf['rounded_re'].agg('sum')
-    yearly_revenue_nolisc = datadf['rounded_revenue'].agg('sum')
+    yearly_revenue_nolisc = datadf['rounded_revenue_ltm'].agg('sum')
     yearly_increased_tax_rev_21 = yearly_revenue_nolisc * .21
     # # -tax rev increase normal 30% -tax increase commercial 60% 
     # yearly_rev_nolisc_comm = datadfcomm['rounded_re'].agg('sum')
     # yearly_rev_nolisc_nocomm = datadfnocomm['rounded_re'].agg('sum')
-    yearly_rev_nolisc_comm = datadfcomm['rounded_revenue'].agg('sum')
-    yearly_rev_nolisc_nocomm = datadfnocomm['rounded_revenue'].agg('sum')
-    yearly_rev_nocomm = (yearly_rev_nolisc_nocomm * .30)
+    yearly_rev_nolisc_comm = datadfcomm['rounded_revenue_ltm'].agg('sum')
+    yearly_rev_nolisc_nocomm = datadfnocomm['rounded_revenue_ltm'].agg('sum')
+    #could be cool to allow user input for this instead of hardcoded 30 and 60
+    yearly_rev_nocomm = (yearly_rev_nolisc_nocomm * .30) 
     yearly_rev_comm = (yearly_rev_nolisc_comm * .60)
     yearly_rev_tot = yearly_rev_nocomm + yearly_rev_comm
     feestats.append(round(yearly_fee_tot,2))
@@ -102,52 +120,51 @@ def feetax_stats(datadf, datadfcomm, datadfnocomm):
     feestats.append(round(yearly_rev_tot,2))
     return feestats
 
-# feestats_list = feetax_stats(policy1_df0, policy1_df0_comm, policy1_df0_nocomm)
+feestats_list = feetax_stats(policy1_df0, policy1_df0_comm, policy1_df0_nocomm)
 
 
+#here we can overlay the census choropleth for the orignal map
 def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
     #create bubble map
     bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo) 
     folium.LayerControl().add_to(bub_map)
     # TODO change 1 to yes and had total listings and if in florence and make more maps for commercial and not in florence 
     for index, location_info in mapdf.iterrows():
-        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="black", fill=True, fill_color ="black",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue"])).add_to(bub_map)
+        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="black", fill=True, fill_color ="black",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(bub_map)
     bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
     return bub_map
 #original_airbnb_map(mapdf, datadf, tileinfo)
-# original_airbnb_map(df0, esri, attrib, 'original_airbnb_map')
+original_airbnb_map(df0, esri, attrib, 'original_airbnb_map')
 
 
+#here we want to switch to red and green dots or yellow on top of blue, and make a legend
 def updated_airbnb_map(mapdf, datadf, inverse_datadf, tileinfo, attribinfo, filetitle):
     #create updated bubble map after clicking certain policy x
     updated_bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo) 
     folium.LayerControl().add_to(updated_bub_map)
     for index, location_info in datadf.iterrows():
-        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="crimson", fill=True, fill_color ="crimson",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue"])).add_to(updated_bub_map)
+        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="crimson", fill=True, fill_color ="crimson",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
     
     for index, location_info in inverse_datadf.iterrows():
-        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill=True, fill_color ="blue",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue"])).add_to(updated_bub_map)
+        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill=True, fill_color ="blue",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
     updated_bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
 
     return updated_bub_map
-# updated_airbnb_map(df0, policy4_df0, policy4_df0_inverse, esri, attrib, 'policy4_df0_funct')
+updated_airbnb_map(df0, policy1_df0, policy1_df0_inverse, esri, attrib, 'policy4_df0_funct')
 
-# Test function for module  
-def _test():
-    pass
-    # assert as_int('1') == 1
-    #assert function value input equals certain expected value if function working
 def get_orig_map():
-    df = load_csv_data(data_path + '/csv_ia/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
+    # df = load_csv_data(data_path + '/csv_ia/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
+    df = load_database_data() 
     df0 = clean_dataframe(df)
     bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
     return bubmap
   
 
 def getbubmaps():
-    df = load_csv_data(data_path + '/csv_ia/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
+    # df = load_csv_data(data_path + '/csv_ia/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
+    df = load_database_data() 
     df0 = clean_dataframe(df)
-    policy1_df0, policy1_df0_inverse, policy1_df0_comm, policy1_df0_nocomm, policy2_df0, policy2_df0_inverse, policy3_df0, policy3_df0_inverse, policy4_df0, policy4_df0_inverse = create_specific_dataframes(df0)
+    policy1_df0, policy1_df0_inverse, policy1_df0_comm, policy1_df0_nocomm, policy2_df0, policy2_df0_inverse, policy3_df0, policy3_df0_inverse, = create_specific_dataframes(df0)
     # basic_stats_df0 = stats(df0)
     # feestats_list = feetax_stats(policy1_df0, policy1_df0_comm, policy1_df0_nocomm)
     bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
@@ -173,7 +190,7 @@ def popup_html(row):
     host_location = row.host_location
     license = row.license
     host_total_listings_count = row.host_total_listings_count
-    global_total_listings = row.global_total_listings
+    # global_total_listings = row.global_total_listings
     listing_url = row.listing_url
     listing_id = row.id
     listing_name = row.name
@@ -182,11 +199,11 @@ def popup_html(row):
     room_type = row.room_type
     bedrooms = row.bedrooms
     accommodates = row.accommodates
-    rounded_revenue = round(row.rounded_revenue, 2)
-    monthly_rounded_revenue = round((rounded_revenue / 12), 2)
+    rounded_revenue_ltm = round(row.rounded_revenue_ltm, 2)
+    monthly_rounded_revenue_ltm = round((rounded_revenue_ltm / 12), 2)
     price = row.price
     night_min = 2 #dummy placeholder
-    days_rented = round(row.days_rented, 2)
+    days_rented_ltm = round(row.days_rented_ltm, 2)
     reviews_per_month = row.reviews_per_month
     census_tract = 8972720.3 #dummy placeholder
     number_listings_census = 40 #dummy placeholder
@@ -211,7 +228,6 @@ def popup_html(row):
         <p id="listingHostLicense"><span id="listingHostLicense">Hosting since: {}</span>""".format(host_since) + """</p>
         <p id="listingHostLicense"><span id="listingHostLicense">{}</span>""".format(license) + """ No License </p>
         <p id="listingHostCountContainer">(<span id="listingHostListingCount">{}</span>""".format(host_total_listings_count) + """ other listings locally)</p>
-        <p id="listingHostCountContainerGlobal">(<span id="listingHostListingCountGlobal">{}</span>""".format(global_total_listings) + """ other listings globally)</p>
     </div>
     <div class="listingDetailsContainer">
         <p id="listingIDContainer"><a id="listingID" target="_blank" href={}>""".format(listing_url) + """ {}</a>""".format(listing_id) + """</p>
@@ -222,15 +238,15 @@ def popup_html(row):
     </div>
     <div id="listingPriceSection" class="listingSection">
         <p class="listingSectionHeadlineContainer">
-            <span class="listingSectionHeadline"><span class="dollarSign">€</span><span id="listingEstimatedIncomePerYear">{}</span>""".format(rounded_revenue) + """</span><span id="listingPriceLabel" class="listingSectionHeadlineLabel"> income/year (est.)</span>
+            <span class="listingSectionHeadline"><span class="dollarSign">€</span><span id="listingEstimatedIncomePerYear">{}</span>""".format(rounded_revenue_ltm) + """</span><span id="listingPriceLabel" class="listingSectionHeadlineLabel"> income/year (est.)</span>
         </p>
-        <p <span class="listingSectionSubhead"><span class="dollarSign">€</span><span id="listingEstimatedIncomePerMonth">{}</span>""".format(monthly_rounded_revenue) + """</span><span id="listingPriceLabel" class="listingSectionSubhead"> income/month (est.)</span> </p>
+        <p <span class="listingSectionSubhead"><span class="dollarSign">€</span><span id="listingEstimatedIncomePerMonth">{}</span>""".format(monthly_rounded_revenue_ltm) + """</span><span id="listingPriceLabel" class="listingSectionSubhead"> income/month (est.)</span> </p>
         <p class="listingSectionSubhead"><span class="dollarSign">€</span><span id="listingPrice">{}</span>""".format(price) + """/night</p>
         <p class="listingSectionSubhead"><span id="listingMinimumNights">{}</span>""".format(night_min) + """ night minimum</p>
     </div>
     <div id="listingReviewsSection" class="listingSection">
         <p class="listingSectionHeadlineContainer">
-            <span class="listingSectionSubhead"><span id="listingEstimatedNightsPerYear" class="listingSectionHeadline">{}</span>""".format(days_rented) + """<span class="listingSectionHeadlineLabel"> nights/year (est.)</span></span>
+            <span class="listingSectionSubhead"><span id="listingEstimatedNightsPerYear" class="listingSectionHeadline">{}</span>""".format(days_rented_ltm) + """<span class="listingSectionHeadlineLabel"> nights/year (est.)</span></span>
         </p>
         <!-- <p class="listingSectionSubhead"><span id="listingEstimatedOccupancyRate">23.4</span>% occupancy rate (est.)</p> -->
         <p class="listingSectionSubhead"><span id="listingReviewPerMonth">{}</span>""".format(reviews_per_month) + """ reviews/month</p>
