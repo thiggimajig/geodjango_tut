@@ -23,19 +23,20 @@ from world.views import allpoints, policyone, policy, about, organize, terms, me
 
 urlpatterns = [
     #maps
-    path('allpoints', allpoints, name = 'allpoints'),
+    path('allpoints', allpoints, name = 'allpoints'), #this is the landing page template for census
     # path('startingmap', starting_map, name='startingmap'),
-    path('policyone', policyone, name='policyone'),
+    path('policyexplorer', policy, name='policyexplorer'),  #this is the policy explorer template
+    path('policyone', policyone, name='policyone'), #this is policy one implmemented
     # path('policytwo', policytwo, name='policytwo'),
     # path('policythree', policythree, name='policythree'),
-    path('policyexplorer', policy, name='policyexplorer'),
+    
     # path('timelapse', timelapse, name='timelapse'),
     #nonmap
     # path('quiz', quiz, name='quiz'),
-    path('terms', terms, name='terms'),
-    path('about', about, name='about'),
-    path('organize', organize, name='organize'),
-    path('methodology', method, name ='method'),
+    path('terms', terms, name='terms'), #this is glossary of terms and frequently asked qustions myths 
+    path('about', about, name='about'), #this is aout this project explaining my program my interest my thesis 
+    path('organize', organize, name='organize'), #this will have a page explaining global movement, and link to IA
+    path('methodology', method, name ='method'), #this will link to calculations on fees, taxes, occupancy, days, revenue, muit listing, scraped data
     #random ones
     # path('', index, name='index'),
     path('admin/', admin.site.urls)

@@ -24,15 +24,24 @@ sys.path.append(data_path)
 esri = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
 attrib = 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
 
-#TODO FOR REFACTOR: i think i need to atleast change the first two functions so that the data comes from the database not a csv file 
+#successfully refactored to pull from database not csv file
 #found this from ... https://stackoverflow.com/questions/11697887/converting-django-queryset-to-pandas-dataframe 
 #an alternative method # Convert Django's Queryset into a Pandas DataFrame: pricing_dataframe = pd.DataFrame.from_records(prices.values())
-
+#i think i need to use iterator here to help memory issues... 
+# star_set = Star.objects.all()
+# # The `iterator()` method ensures only a few rows are fetched from
+# # the database at a time, saving memory.
+# for star in star_set.iterator():
+#     print(star.name)
+#try using @cached_property
 def load_database_data():
+    # airbnb_data = AirbnbListings.objects.all().values('id', 'has_liscense', 'days_rented_ltm', 'rounded_revenue_ltm', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude')
+    # for listing in airbnb_data.iterator():
+    #     df = pd.DataFrame(list(listing))
+    #.iterator() tried to see if faster... 
     df = pd.DataFrame(list(AirbnbListings.objects.all().values('id', 'has_liscense', 'days_rented_ltm', 'rounded_revenue_ltm', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude')))
-    print(df.head())
     return df
-df = load_database_data()
+# df = load_database_data()
 #load up csv file into df
 #here we are loading the data from a csv file... but we can just as easily do that from the model
 # def load_csv_data(ia):
@@ -45,7 +54,7 @@ def clean_dataframe(s):
     columns_df0 = ['id', 'has_liscense', 'days_rented_ltm', 'rounded_revenue_ltm', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude']
     cleaned_df = s.loc[:,columns_df0]
     return cleaned_df
-df0 = clean_dataframe(df)
+# df0 = clean_dataframe(df)
 
 
 #here from that cleaned data frame i make dataframes with data specific for each policy function...
@@ -66,7 +75,7 @@ def create_specific_dataframes(s):
 
     return no_lisc_df0, lisc_df0, comm_no_lisc_df0, nocomm_no_lisc_df0, entire_df0, not_entire_df0, many_listings_df0, not_many_listings_df0
 
-policy1_df0, policy1_df0_inverse, policy1_df0_comm, policy1_df0_nocomm, policy2_df0, policy2_df0_inverse, policy3_df0, policy3_df0_inverse = create_specific_dataframes(df0)
+# policy1_df0, policy1_df0_inverse, policy1_df0_comm, policy1_df0_nocomm, policy2_df0, policy2_df0_inverse, policy3_df0, policy3_df0_inverse = create_specific_dataframes(df0)
 
 #here i create basic stats from the entire data...but if i can loop through all rows in the model i can accomplish this or I can use the new dataframes with the model data if we go that route
 def stats(dataframe):
@@ -77,7 +86,7 @@ def stats(dataframe):
     fi_stats.append(count_of_listings)
     fi_stats.append(count_of_bedrooms)
     return fi_stats
-basic_stats_df0 = stats(df0)
+# basic_stats_df0 = stats(df0)
 
 def updated_stats(datadf, datadfinverse):
     count_listings_effected = datadf.shape[0]
@@ -120,37 +129,38 @@ def feetax_stats(datadf, datadfcomm, datadfnocomm):
     feestats.append(round(yearly_rev_tot,2))
     return feestats
 
-feestats_list = feetax_stats(policy1_df0, policy1_df0_comm, policy1_df0_nocomm)
+# feestats_list = feetax_stats(policy1_df0, policy1_df0_comm, policy1_df0_nocomm)
 
-
-#here we can overlay the census choropleth for the orignal map
+#this map is for the policy landing page template
 def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
     #create bubble map
     bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo) 
     folium.LayerControl().add_to(bub_map)
     # TODO change 1 to yes and had total listings and if in florence and make more maps for commercial and not in florence 
     for index, location_info in mapdf.iterrows():
-        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="black", fill=True, fill_color ="black",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(bub_map)
+        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill_opacity= 0.2, fill=True, fill_color ="black",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(bub_map)
     bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
     return bub_map
 #original_airbnb_map(mapdf, datadf, tileinfo)
-original_airbnb_map(df0, esri, attrib, 'original_airbnb_map')
+# original_airbnb_map(df0, esri, attrib, 'original_airbnb_map')
 
 
 #here we want to switch to red and green dots or yellow on top of blue, and make a legend
+#this map is for policyone map template
 def updated_airbnb_map(mapdf, datadf, inverse_datadf, tileinfo, attribinfo, filetitle):
     #create updated bubble map after clicking certain policy x
     updated_bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo) 
-    folium.LayerControl().add_to(updated_bub_map)
-    for index, location_info in datadf.iterrows():
-        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="crimson", fill=True, fill_color ="crimson",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
     
+    #testing why index is grayed out and why yellow doesn't show in my maps... opacity? 
     for index, location_info in inverse_datadf.iterrows():
-        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill=True, fill_color ="blue",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
+        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill=True, fill_color ="blue", fill_opacity= 0.2, popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="unaffectedyearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
+    for index, location_info in datadf.iterrows():
+        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="yellow", fill=True, fill_color ="yellow", fill_opacity= 0.2, popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="affected yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
+    folium.LayerControl().add_to(updated_bub_map)
     updated_bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
 
     return updated_bub_map
-updated_airbnb_map(df0, policy1_df0, policy1_df0_inverse, esri, attrib, 'policy4_df0_funct')
+# updated_airbnb_map(df0, policy1_df0, policy1_df0_inverse, esri, attrib, 'policy4_df0_funct')
 
 def get_orig_map():
     # df = load_csv_data(data_path + '/csv_ia/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
@@ -159,23 +169,27 @@ def get_orig_map():
     bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
     return bubmap
   
-
+#trying to insert df0 instead of calling it in the function... why was I calling it in here?
+#doesn't work, but maybe instead of calling this function in views we can just pass the result?
 def getbubmaps():
     # df = load_csv_data(data_path + '/csv_ia/test_file.csv') #/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/test_file.csv
     df = load_database_data() 
     df0 = clean_dataframe(df)
-    policy1_df0, policy1_df0_inverse, policy1_df0_comm, policy1_df0_nocomm, policy2_df0, policy2_df0_inverse, policy3_df0, policy3_df0_inverse, = create_specific_dataframes(df0)
+    policy1_df0, policy1_df0_inverse, policy1_df0_comm, policy1_df0_nocomm, policy2_df0, policy2_df0_inverse, policy3_df0, policy3_df0_inverse = create_specific_dataframes(df0)
     # basic_stats_df0 = stats(df0)
     # feestats_list = feetax_stats(policy1_df0, policy1_df0_comm, policy1_df0_nocomm)
+
     bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
     updatedbubmap_1 = updated_airbnb_map(df0, policy1_df0, policy1_df0_inverse, esri, attrib, 'policy1_df0_funct_script')
     updatedbubmap_2 = updated_airbnb_map(df0, policy2_df0, policy2_df0_inverse, esri, attrib, 'policy2_df0_funct_script')
     updatedbubmap_3 = updated_airbnb_map(df0, policy3_df0, policy3_df0_inverse, esri, attrib, 'policy3_df0_funct_script')
+    #census map referenced befor assignement i don't get it i'm doing the same for bubmap and the rest 
+    # census_map = census_map(esri, attrib)
     # updated_stats = updated_stats(policy1_df0, policy1_df0_inverse) 
     # ltr_stats = ltr_stats(policy1_df0) 
     #MUST RETURN THINGS!!!! 
     #here we can return all the maps for all the policies etc, then in views call them by the [0]
-    bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
+    # bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
     return bubmap, updatedbubmap_1, updatedbubmap_2, updatedbubmap_3
 
 def popup_html(row):
@@ -275,6 +289,15 @@ def popup_html(row):
 </html>
     """  
     return html
+
+
+#here we can overlay the census choropleth for the orignal map
+#this map is for the census assess non airbnb template
+# def census_map(tileinfo, attribinfo):
+#     census_map = folium.Map(location=[43.769, 11.255],zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo)
+#     folium.CircleMarker(location=[43.7731, 11.2560], radius=2, color="purple", fill=True, fill_color ="purple", fill_opacity= 0.2, popup="Duomo")
+#     return census_map
+
 #only need if running this as a script not importing
 # def main():
 # if __name__ == '__main__':

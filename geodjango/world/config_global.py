@@ -1,0 +1,3 @@
+#i think here we want to load all the data base maps and then import whenever i need them i
+#in views.py ... 
+#https://stackoverflow.com/questions/51198019/setting-database-variables-as-global-variables-python 

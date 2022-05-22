@@ -17,18 +17,32 @@ sys.path.append(data_path)
 from . import policy_functions as pf
 # from . import popup_html as popup_html
 
+#trying for database optimization to create a function that calls all pf functions at beginning
+#or will this not help because am i calling it when I import it above as pf? 
+def call_all_pf_functions():
+    getmapstuple = pf.getbubmaps()
+    map_orig = getmapstuple[0]
+    map_1 = getmapstuple[1]
+    map_2 = getmapstuple[2]
+    map_3 = getmapstuple[3]
+    # census_map = getmapstuple[4]
+    return map_orig, map_1, map_2, map_3
+# map_orig, map_1, map_2, map_3 = call_all_pf_functions()
+
 #this one allpoints is working so lets go with it
 def allpoints(request):
     #create map
-    map = folium.Map(location=[43.7696, 11.2558], tiles='CartoDB Positron', zoom_start=15)
+    # map = folium.Map(location=[43.7696, 11.2558], tiles='CartoDB Positron', zoom_start=15)
+    maps = call_all_pf_functions()
+    map = maps[4]
     #styles of map
-    folium.raster_layers.TileLayer('OpenStreetMap').add_to(map)
-    folium.raster_layers.TileLayer('Stamen Toner').add_to(map)
-    folium.raster_layers.TileLayer('Stamen Terrain').add_to(map)
-    folium.raster_layers.TileLayer('CartoDB Positron').add_to(map)
-    folium.LayerControl().add_to(map)    
-    allpoints=AirbnbListings.objects.all()
-    names=[i for i in allpoints]
+    # folium.raster_layers.TileLayer('OpenStreetMap').add_to(map)
+    # folium.raster_layers.TileLayer('Stamen Toner').add_to(map)
+    # folium.raster_layers.TileLayer('Stamen Terrain').add_to(map)
+    # folium.raster_layers.TileLayer('CartoDB Positron').add_to(map)
+    # folium.LayerControl().add_to(map)    
+    # allpoints=AirbnbListings.objects.all()
+    # names=[i for i in allpoints]
     # name=[i.name for i in names]
     # price = [i.price for i in names]
     # lat = [i.latitude for i in names]
@@ -36,14 +50,15 @@ def allpoints(request):
     # for i in names:
     #     marker = [i.latitude, i.longitude]
     #     folium.CircleMarker(location=marker, tooltip=i.name, popup=i.price).add_to(map) #popup=i.price
-    for i in names:
-        html = pf.popup_html(i)
-        # marker = [i.latitude, i.longitude]
-        folium.Circle([i.latitude, i.longitude], radius=4, color = "blue",opacity=.2, fill = True, fill_opacity = .1, fill_color="blue", tooltip=html, popup=html).add_to(map) 
+    # for i in names:
+    #     html = pf.popup_html(i)
+    #     # marker = [i.latitude, i.longitude]
+    #     folium.Circle([i.latitude, i.longitude], radius=4, color = "blue",opacity=.2, fill = True, fill_opacity = .1, fill_color="blue", tooltip=html, popup=html).add_to(map) 
     # # create html version of map
     map = map._repr_html_()
     #coords = [(lat for i in names) , (long for i in names)]
     return render(request,'allpoints.html',{'allpoints':allpoints,'map':map})
+
     #(request, template.html, {variables to pass through})
 # def starting_map(request):
 #     # should be able to access ALL variables from policy_functions... so will just display that map here
@@ -101,11 +116,21 @@ def allpoints(request):
     
 #     return render(request, "maps/starting_map.html",{'allpoints':allpoints,'map':map, 'stats': stats, 'no_permit':no_permit, 'host_count_unique': host_count_unique, 'untaxed_revenue': untaxed_revenue, 'centro_count':centro_count, 'bedroom_count':bedroom_count, 'avg_price': avg_price, 'percent_entire': percent_entire})
 
+def policy(request):
+    maps = call_all_pf_functions()
+    map = maps[0]
+    map = map._repr_html_()
+    return render(request,"maps/policyexplorer.html", {'map':map}) #{"updated_map":updated_map} 
+
 # starting_map(original_airbnb_map, stats)
 def policyone(request):
-    getmapstuple = pf.getbubmaps()
-    map_orig = getmapstuple[0]
-    map_1 = getmapstuple[1]
+    maps = call_all_pf_functions()
+    map = maps[1]
+    # getmapstuple = pf.getbubmaps()
+    # map_orig = getmapstuple[0]
+    # map_1 = getmapstuple[1]
+    # map_2 = getmapstuple[2]
+    # map_3 = getmapstuple[3]
     # # updatedmap.save(data_path + '/Out_Map/test.html')
              #create map
     # map = folium.Map(location=[43.7696, 11.2558], tiles='CartoDB Positron', zoom_start=15)
@@ -151,10 +176,11 @@ def policyone(request):
     stats = 78723
      
     # # create html version of map
-    map = map_1._repr_html_()
+    map = map._repr_html_()
     
     # return render(request, "maps/policy1.html",{'allpoints':allpoints,'map':map, 'stats': stats, 'no_permit':no_permit, 'host_count_unique': host_count_unique, 'untaxed_revenue': untaxed_revenue, 'centro_count':centro_count, 'bedroom_count':bedroom_count, 'avg_price': avg_price, 'percent_entire': percent_entire})
-    return render(request, "maps/policy1.html",{'allpoints':allpoints,'map':map, 'stats': stats})
+    return render(request, "maps/policy1.html",{'map':map, 'stats': stats})
+# policyone(map_1)
 
 # def policytwo(request):
 #     # getmapstuple = pf.getbubmaps()
@@ -323,5 +349,3 @@ def method(request):
     
 #     return render(request, "includes/index.html",{'allpoints':allpoints,'map':map, 'stats': stats, 'no_permit':no_permit, 'host_count_unique': host_count_unique, 'untaxed_revenue': untaxed_revenue, 'centro_count':centro_count, 'bedroom_count':bedroom_count, 'avg_price': avg_price, 'percent_entire': percent_entire})
 
-def policy(request):
-    return render(request,"policy.html") #{"updated_map":updated_map} 
