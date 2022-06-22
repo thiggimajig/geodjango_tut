@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from django.test import TestCase
 from django.utils import timezone
 from django.core.urlresolvers import reverse
@@ -10,12 +11,16 @@ import world.policy_functions
 class ListingsTestCase(TestCase):
     #method to create listing object 
     def setUp(self):
-        AirbnbListings.objects.create(id="2", price="44.00")
+        AirbnbListingstable.objects.create(id="2", price="44.00")
         #AirbnbListings.objects.all().values #to get all values
         pass
         
     #method to test xyz
     def test_listings_creation():
+        pass
+
+    def understand_database_usages():
+        QuerySet.explain()
         pass
 
 

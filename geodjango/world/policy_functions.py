@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import geojson
 # import geopandas
 import pandas as pd
@@ -11,7 +12,7 @@ from IPython.display import display, HTML
 from pathlib import Path 
 import os
 import sys
-from .models import AirbnbListings 
+from .models import AirbnbListings
 # from models import AirbnbListings 
 data_path = os.path.abspath('/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/data/')
 sys.path.append(data_path)
@@ -40,19 +41,25 @@ def load_database_data():
     #     df = pd.DataFrame(list(listing))
     #.iterator() tried to see if faster... 
     df = pd.DataFrame(list(AirbnbListings.objects.all().values('id', 'has_liscense', 'days_rented_ltm', 'rounded_revenue_ltm', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude')))
+    print("load data base is running")
     return df
 # df = load_database_data()
 #load up csv file into df
 #here we are loading the data from a csv file... but we can just as easily do that from the model
 # def load_csv_data(ia):
+#     # ia_df = pd.read_csv(ia)
+#     # return ia_df
 #     ia_df = pd.read_csv(ia)
+#     census_data = "../csv/num_air_pop_census_dj.csv"
+#     census_data2 = "../csv/map1_4_census_by_pop_dj.csv"
 #     return ia_df
-# # df = load_csv_data(data_path + 'csv_ia/test_file.csv')
+# df = load_csv_data(data_path + 'csv_ia/test_file.csv')
 
 #here we create the cleaned dataframe we want having dropped things we don't care about...but that'll change
 def clean_dataframe(s):
     columns_df0 = ['id', 'has_liscense', 'days_rented_ltm', 'rounded_revenue_ltm', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude']
     cleaned_df = s.loc[:,columns_df0]
+    # print(cleaned_df.head())
     return cleaned_df
 # df0 = clean_dataframe(df)
 
@@ -63,6 +70,7 @@ def create_specific_dataframes(s):
     #policy1 df
     no_lisc_df0 = (s.loc[s['has_liscense'] == 0])
     lisc_df0 = (s.loc[s['has_liscense'] == 1])
+    # print(no_lisc_df0.head())
     #policy1 comm df
     comm_no_lisc_df0 = (no_lisc_df0.loc[no_lisc_df0['commercial'] == 1])
     nocomm_no_lisc_df0 = (no_lisc_df0.loc[no_lisc_df0['commercial'] == 0])
@@ -91,6 +99,7 @@ def stats(dataframe):
 def updated_stats(datadf, datadfinverse):
     count_listings_effected = datadf.shape[0]
     count_listings_not_effected = datadfinverse.shape[0]
+    # percentage_effected = (count_listings_effected/fi_stats[0])* 100
     return count_listings_effected, count_listings_not_effected
 
 
@@ -121,20 +130,142 @@ def feetax_stats(datadf, datadfcomm, datadfnocomm):
     yearly_rev_nolisc_comm = datadfcomm['rounded_revenue_ltm'].agg('sum')
     yearly_rev_nolisc_nocomm = datadfnocomm['rounded_revenue_ltm'].agg('sum')
     #could be cool to allow user input for this instead of hardcoded 30 and 60
-    yearly_rev_nocomm = (yearly_rev_nolisc_nocomm * .30) 
+    total_revenue_all_hosts = yearly_rev_nolisc_comm + yearly_rev_nolisc_nocomm
     yearly_rev_comm = (yearly_rev_nolisc_comm * .60)
+    yearly_rev_nocomm = (yearly_rev_nolisc_nocomm * .30) 
     yearly_rev_tot = yearly_rev_nocomm + yearly_rev_comm
-    feestats.append(round(yearly_fee_tot,2))
-    feestats.append(round(yearly_increased_tax_rev_21,2))
-    feestats.append(round(yearly_rev_tot,2))
+    feestats.append(round(total_revenue_all_hosts, 2))
+    feestats.append(round(yearly_fee_tot,2)) #increased fee permit 
+    feestats.append(round(yearly_increased_tax_rev_21,2)) #no liscense at 21% tax lost 
+    feestats.append(round(yearly_rev_tot,2)) #no lisc comm and noncomm differentiate tax 30% and 60%
     return feestats
 
 # feestats_list = feetax_stats(policy1_df0, policy1_df0_comm, policy1_df0_nocomm)
+def get_stats():
+    df = load_database_data() 
+    df0 = clean_dataframe(df)
+    fi_stats = stats(df0)
+    return fi_stats
+
+
+#here we can overlay the census choropleth for the orignal map
+#this map is for the census assess non airbnb template
+def census_map(mapdf, tileinfo, attribinfo):
+    census_geo = "/Users/stateofplace/new_codes/geodjango_tut/geodjango/csv/joined_census_neigh_dj.geojson"
+    
+    census_data = "/Users/stateofplace/new_codes/geodjango_tut/geodjango/csv/num_air_pop_census_dj.csv"
+    census_data2 = "/Users/stateofplace/new_codes/geodjango_tut/geodjango/csv/map1_4_census_by_pop_dj.csv"
+    census_df = pd.read_csv(census_data)
+    census_df2 = pd.read_csv(census_data2)
+    #insert neighbhorhood 
+    #map layer four: neighborhood rent burden
+    florence_geo = "/Users/stateofplace/new_codes/geodjango_tut/geodjango/csv/florence_neighbourhoods_dj.geojson"
+    florence_data = "/Users/stateofplace/new_codes/geodjango_tut/geodjango/csv/rent_burden_neigh_dj.csv"
+    florence_df = pd.read_csv(florence_data)
+
+    census_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo)
+    folium.CircleMarker(location=[43.7731, 11.2560], radius=2, color="purple", fill=True, fill_color ="purple", fill_opacity= 0.2, popup="Duomo").add_to(census_map)
+    #map layer one: rentership rates
+    bins = list(census_df2["a47_by100"].quantile([0, 0.25, 0.5, 0.75, 1]))
+    folium.Choropleth(
+        geo_data = census_geo,
+        # geo_data = geo_census,
+        name="Renters per Capita",
+        data = census_df2,
+        # data=census_df,
+        columns=["SEZ2011", "a47_by100"],
+        # columns=["SEZ2011", "field_1"],
+        key_on= "properties.SEZ2011",
+        # key_on="features.geometry.SEZ2011", #in geojson where to find coordinates, a bit of a guess
+        fill_color='Blues', #find a colorbrewer code
+        fill_opacity=0.7,
+        line_opacity=0.2,
+        bins=bins, #make your own bins
+        nan_fill_color='white',
+        highlight=True,
+        legend_name= "Rate of Renters per 100 residents",   
+        reset=True, #not sure what this does 
+    ).add_to(census_map)
+        #map layer two: airbnbs per capita
+    bins_2 = list(census_df["cont_per_1000"].quantile([0, 0.25, 0.5, 0.75, 1]))
+    # m = folium.Map(location=[43.769, 11.255],zoom_start=13, tiles='CartoDB Positron')
+
+    folium.Choropleth(
+        geo_data = census_geo,
+        # geo_data = geo_census,
+        name="Airbnbs Per Capita",
+        data = census_df,
+        # data=census_df,
+        columns=["census_tract_id", "cont_per_1000"],
+        # columns=["SEZ2011", "field_1"],
+        key_on= "properties.SEZ2011",
+        # key_on="features.geometry.SEZ2011", #in geojson where to find coordinates, a bit of a guess
+        fill_color='Reds', #find a colorbrewer code
+        fill_opacity=0.7,
+        line_opacity=0.2,
+        bins=bins_2, #make your own bins
+        nan_fill_color='white',
+        highlight=True,
+        legend_name= "Airbnb Listings per 100 residents",   
+        reset=True, #not sure what this does 
+    ).add_to(census_map)
+
+    #map layer three: airbnb per units
+    bins_3 = list(census_df["air_e27_per1000"].quantile([0, 0.25, 0.5, 0.75, 1]))
+    # m = folium.Map(location=[43.769, 11.255],zoom_start=13, tiles='CartoDB Positron')
+
+    folium.Choropleth(
+        geo_data = census_geo,
+        # geo_data = geo_census,
+        name="Airbnbs Per Units",
+        data = census_df,
+        # data=census_df,
+        columns=["census_tract_id", "air_e27_per1000"],
+        # columns=["SEZ2011", "field_1"],
+        key_on= "properties.SEZ2011",
+        # key_on="features.geometry.SEZ2011", #in geojson where to find coordinates, a bit of a guess
+        fill_color='Greens', #find a colorbrewer code
+        fill_opacity=0.7,
+        line_opacity=0.2,
+        bins=bins_3, #make your own bins
+        nan_fill_color='white',
+        highlight=True,
+        legend_name= "Airbnb Listings Per 1000 housing Units",   
+        reset=True, #not sure what this does 
+    ).add_to(census_map)
+
+
+    bins_4 = list(florence_df["rent_burden"].quantile([0, 0.25, 0.5, 0.75, 1]))
+    folium.Choropleth(
+        geo_data = florence_geo,
+        # geo_data = geo_census,
+        name="Rent Burden Percent",
+        data = florence_df,
+        # data=census_df,
+        columns=["neighbourhood_cleansed", "rent_burden"],
+        # columns=["SEZ2011", "field_1"],
+        key_on= "feature.properties.neighbourhood",
+        # key_on="features.geometry.SEZ2011", #in geojson where to find coordinates, a bit of a guess
+        fill_color='Purples', #find a colorbrewer code
+        fill_opacity=0.7,
+        line_opacity=0.2,
+        bins=bins_4, #make your own bins
+        nan_fill_color='white',
+        highlight=True,
+        legend_name= "Neighborhood Rent Burden %",   
+        reset=True, #not sure what this does 
+    ).add_to(census_map)
+
+    folium.LayerControl().add_to(census_map)
+    census_map.save('census_map.html')
+    return census_map
+
+
 
 #this map is for the policy landing page template
 def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
     #create bubble map
-    bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo) 
+    bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles='CartoDB Positron', attr=attribinfo) 
     folium.LayerControl().add_to(bub_map)
     # TODO change 1 to yes and had total listings and if in florence and make more maps for commercial and not in florence 
     for index, location_info in mapdf.iterrows():
@@ -149,7 +280,7 @@ def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
 #this map is for policyone map template
 def updated_airbnb_map(mapdf, datadf, inverse_datadf, tileinfo, attribinfo, filetitle):
     #create updated bubble map after clicking certain policy x
-    updated_bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo) 
+    updated_bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles='CartoDB Positron', attr=attribinfo) 
     
     #testing why index is grayed out and why yellow doesn't show in my maps... opacity? 
     for index, location_info in inverse_datadf.iterrows():
@@ -168,7 +299,8 @@ def get_orig_map():
     df0 = clean_dataframe(df)
     bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
     return bubmap
-  
+
+
 #trying to insert df0 instead of calling it in the function... why was I calling it in here?
 #doesn't work, but maybe instead of calling this function in views we can just pass the result?
 def getbubmaps():
@@ -184,13 +316,13 @@ def getbubmaps():
     updatedbubmap_2 = updated_airbnb_map(df0, policy2_df0, policy2_df0_inverse, esri, attrib, 'policy2_df0_funct_script')
     updatedbubmap_3 = updated_airbnb_map(df0, policy3_df0, policy3_df0_inverse, esri, attrib, 'policy3_df0_funct_script')
     #census map referenced befor assignement i don't get it i'm doing the same for bubmap and the rest 
-    # census_map = census_map(esri, attrib)
+    census_choro_map = census_map(df0, esri, attrib)
     # updated_stats = updated_stats(policy1_df0, policy1_df0_inverse) 
     # ltr_stats = ltr_stats(policy1_df0) 
     #MUST RETURN THINGS!!!! 
     #here we can return all the maps for all the policies etc, then in views call them by the [0]
     # bubmap = original_airbnb_map(df0, esri, attrib, 'original_airbnb_map_script')
-    return bubmap, updatedbubmap_1, updatedbubmap_2, updatedbubmap_3
+    return bubmap, updatedbubmap_1, updatedbubmap_2, updatedbubmap_3, census_choro_map
 
 def popup_html(row):
     # html ="hello"  #this worked, we can do this. niente
@@ -291,16 +423,16 @@ def popup_html(row):
     return html
 
 
-#here we can overlay the census choropleth for the orignal map
-#this map is for the census assess non airbnb template
-# def census_map(tileinfo, attribinfo):
-#     census_map = folium.Map(location=[43.769, 11.255],zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo)
-#     folium.CircleMarker(location=[43.7731, 11.2560], radius=2, color="purple", fill=True, fill_color ="purple", fill_opacity= 0.2, popup="Duomo")
-#     return census_map
-
 #only need if running this as a script not importing
-# def main():
-# if __name__ == '__main__':
-#     main()
+#tried this to maybe speed things up, so far made poliyc1 longer, 2min to 2.4min, but maybe it'll help others?
+def main():
+    pass
+if __name__ == '__main__':
+    main()
+    census_map()
+    load_database_data()
+    get_orig_map()
+    getbubmaps()
+    
 
 
