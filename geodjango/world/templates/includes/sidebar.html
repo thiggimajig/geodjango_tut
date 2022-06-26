@@ -1,6 +1,10 @@
       <nav class="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
           <a class="navbar-brand me-lg-5" href="/"> 
-            <img class="navbar-brand-dark" src="/geodjango/world/static/assets/img/home-love-svgrepo-com.svg" alt="pic"/>
+            <!-- <img class="navbar-brand-dark" src="/geodjango/world/static/assets/img/home-love-svgrepo-com.svg" alt="pic"/> -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-heart" viewBox="0 0 16 16">
+              <path d="M8 6.982C9.664 5.309 13.825 8.236 8 12 2.175 8.236 6.336 5.309 8 6.982Z"/>
+              <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.707L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.646a.5.5 0 0 0 .708-.707L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+            </svg>
           </a>
           <div class="d-flex align-items-center">
               <button class="navbar-toggler d-lg-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,10 +29,13 @@
             <li class="nav-item">
               <a href="/" class="nav-link d-flex align-items-center">
                 <span class="sidebar-icon">
-                  <img src="/geodjango/world/static/assets/img/home-love-svgrepo-com.svg" height="20" width="20" alt="pic">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-heart" viewBox="0 0 16 16">
+                    <path d="M8 6.982C9.664 5.309 13.825 8.236 8 12 2.175 8.236 6.336 5.309 8 6.982Z"/>
+                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.707L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.646a.5.5 0 0 0 .708-.707L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+                  </svg>
                 </span>
                 <!-- add this up top to nav Airbnb Policy Tool -->
-                <span class="mt-1 ms-1 sidebar-text">Welcome</span>  
+                <span class="mt-1 ms-1 sidebar-text">Home</span>  
               </a>
             </li>
             <li class="nav-item {% if 'Current Map' in segment %} active {% endif %}">
@@ -36,7 +43,7 @@
                 <span class="sidebar-icon">
                   <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"></path></svg>
                 </span>
-                <span class="sidebar-text">Assess the Situation</span>
+                <span class="sidebar-text">Assess the Housing Situation</span>
               </a>
             </li>
             <li class="nav-item {% if 'Policy' in segment %} active {% endif %}">
@@ -60,7 +67,7 @@
         <ul class="flex-column nav">
           <li class="nav-item {% if 'policyexplorer' in segment %} active {% endif %}">
             <a class="nav-link" href="policy_explorer">
-              <span class="sidebar-text">Current Status Quo</span>
+              <span class="sidebar-text">All Active Airbnbs</span>
             </a>
         </li>
         <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
@@ -68,19 +75,19 @@
           <li class="nav-item {% if 'policyone' in segment %} active {% endif %}">
               <a class="nav-link" href="policyone">
                 <!-- Policy One: Licenses Mandatory -->
-                <span class="sidebar-text">Licenses</span>
+                <span class="sidebar-text">Unlicensed Listings Prohibited</span>
               </a>
           </li>
           <li class="nav-item {% if 'policytwo' in segment %} active {% endif %}">
             <a class="nav-link" href="policytwo">
               <!-- Policy Two: Entire Apartments Prohibited -->
-              <span class="sidebar-text">Entire Apartments</span>
+              <span class="sidebar-text">Entire Listings Prohibited</span>
             </a>
           </li>
           <li class="nav-item {% if 'policythree' in segment %} active {% endif %}">
             <a class="nav-link" href="policythree">
               <!-- Policy Three: Mutliple Listings Prohibited -->
-              <span class="sidebar-text">Multiple Listings</span>
+              <span class="sidebar-text">Multiple Listings Prohibited</span>
             </a>
           </li>
         </ul>
@@ -97,12 +104,14 @@
             <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
             <li class="nav-item">
               <a target="_blank" 
-                href="organize"
+                href="mailto:howdy@thiggimajig.com"
                 class="btn btn-secondary d-flex align-items-center justify-content-center btn-upgrade-pro">
                 <span class="sidebar-icon d-inline-flex align-items-center justify-content-center">
-                  <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tsunami" viewBox="0 0 16 16">
+                    <path d="M.036 12.314a.5.5 0 0 1 .65-.278l1.757.703a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.757-.703a.5.5 0 1 1 .372.928l-1.758.703a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0l-1.757-.703a.5.5 0 0 1-.278-.65zm0 2a.5.5 0 0 1 .65-.278l1.757.703a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.757-.703a.5.5 0 1 1 .372.928l-1.758.703a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0l-1.757-.703a.5.5 0 0 1-.278-.65zM2.662 8.08c-.456 1.063-.994 2.098-1.842 2.804a.5.5 0 0 1-.64-.768c.652-.544 1.114-1.384 1.564-2.43.14-.328.281-.68.427-1.044.302-.754.624-1.559 1.01-2.308C3.763 3.2 4.528 2.105 5.7 1.299 6.877.49 8.418 0 10.5 0c1.463 0 2.511.4 3.179 1.058.67.66.893 1.518.819 2.302-.074.771-.441 1.516-1.02 1.965a1.878 1.878 0 0 1-1.904.27c-.65.642-.907 1.679-.71 2.614C11.076 9.215 11.784 10 13 10h2.5a.5.5 0 0 1 0 1H13c-1.784 0-2.826-1.215-3.114-2.585-.232-1.1.005-2.373.758-3.284L10.5 5.06l-.777.388a.5.5 0 0 1-.447 0l-1-.5a.5.5 0 0 1 .447-.894l.777.388.776-.388a.5.5 0 0 1 .447 0l1 .5a.493.493 0 0 1 .034.018c.44.264.81.195 1.108-.036.328-.255.586-.729.637-1.27.05-.529-.1-1.076-.525-1.495-.426-.42-1.19-.77-2.477-.77-1.918 0-3.252.448-4.232 1.123C5.283 2.8 4.61 3.738 4.07 4.79c-.365.71-.655 1.433-.945 2.16-.15.376-.301.753-.463 1.13z"/>
+                  </svg>                
                 </span> 
-                <span>Join us!</span>
+                <span>Send a virtual wave</span>
         </a>
       </li>
     </ul>

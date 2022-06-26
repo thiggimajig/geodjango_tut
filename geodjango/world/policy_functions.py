@@ -163,8 +163,7 @@ def census_map(mapdf, tileinfo, attribinfo):
     florence_data = "/Users/stateofplace/new_codes/geodjango_tut/geodjango/csv/rent_burden_neigh_dj.csv"
     florence_df = pd.read_csv(florence_data)
 
-    census_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles=tileinfo, attr=attribinfo)
-    folium.CircleMarker(location=[43.7731, 11.2560], radius=2, color="purple", fill=True, fill_color ="purple", fill_opacity= 0.2, popup="Duomo").add_to(census_map)
+    census_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles='CartoDB Positron', attr=attribinfo)
     #map layer one: rentership rates
     bins = list(census_df2["a47_by100"].quantile([0, 0.25, 0.5, 0.75, 1]))
     folium.Choropleth(
@@ -177,7 +176,7 @@ def census_map(mapdf, tileinfo, attribinfo):
         # columns=["SEZ2011", "field_1"],
         key_on= "properties.SEZ2011",
         # key_on="features.geometry.SEZ2011", #in geojson where to find coordinates, a bit of a guess
-        fill_color='Blues', #find a colorbrewer code
+        fill_color='Pastel2', #find a colorbrewer code
         fill_opacity=0.7,
         line_opacity=0.2,
         bins=bins, #make your own bins
@@ -186,9 +185,50 @@ def census_map(mapdf, tileinfo, attribinfo):
         legend_name= "Rate of Renters per 100 residents",   
         reset=True, #not sure what this does 
     ).add_to(census_map)
-        #map layer two: airbnbs per capita
+
+    bins_4 = list(florence_df["rent_burden"].quantile([0., 0.25, 0.50, 0.75, 1.]))
+    folium.Choropleth(
+        geo_data = florence_geo,
+        # geo_data = geo_census,
+        name="Rent Burden Percent",
+        data = florence_df,
+        # data=census_df,
+        columns=["neighbourhood_cleansed", "rent_burden"],
+        # columns=["SEZ2011", "field_1"],
+        key_on= "feature.properties.neighbourhood",
+        # key_on="features.geometry.SEZ2011", #in geojson where to find coordinates, a bit of a guess
+        fill_color='Pastel1', #find a colorbrewer code
+        fill_opacity=0.7,
+        line_opacity=0.2,
+        bins=bins_4, #make your own bins
+        nan_fill_color='white',
+        highlight=True,
+        legend_name= "Neighborhood Rent Burden %", 
+        reset=True, #not sure what this does 
+    ).add_to(census_map)
+    folium.CircleMarker(location=[43.7731, 11.2560], radius=2, color="orange", fill=True, fill_color ="orange", fill_opacity= 1, opacity=1, tooltip="Duomo", popup="Duomo").add_to(census_map)
+
+
+    folium.LayerControl().add_to(census_map)
+    census_map.save('census_map.html')
+    return census_map
+
+
+
+#this map is for the policy landing page template
+def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
+    #create bubble map
+    bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles='CartoDB Positron', attr=attribinfo) 
+
+    # TODO change 1 to yes and had total listings and if in florence and make more maps for commercial and not in florence 
+    for index, location_info in mapdf.iterrows():
+        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill_opacity= 0.5, opacity=0.5, fill=True, fill_color ="blue", popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(bub_map)
+    
+    census_geo = "/Users/stateofplace/new_codes/geodjango_tut/geodjango/csv/joined_census_neigh_dj.geojson"
+    census_data = "/Users/stateofplace/new_codes/geodjango_tut/geodjango/csv/num_air_pop_census_dj.csv"
+    census_df = pd.read_csv(census_data)
+
     bins_2 = list(census_df["cont_per_1000"].quantile([0, 0.25, 0.5, 0.75, 1]))
-    # m = folium.Map(location=[43.769, 11.255],zoom_start=13, tiles='CartoDB Positron')
 
     folium.Choropleth(
         geo_data = census_geo,
@@ -200,15 +240,15 @@ def census_map(mapdf, tileinfo, attribinfo):
         # columns=["SEZ2011", "field_1"],
         key_on= "properties.SEZ2011",
         # key_on="features.geometry.SEZ2011", #in geojson where to find coordinates, a bit of a guess
-        fill_color='Reds', #find a colorbrewer code
+        fill_color='YlGnBu', #find a colorbrewer code
         fill_opacity=0.7,
         line_opacity=0.2,
         bins=bins_2, #make your own bins
         nan_fill_color='white',
         highlight=True,
-        legend_name= "Airbnb Listings per 100 residents",   
+        legend_name= "Airbnb Listings per 1000 residents",   
         reset=True, #not sure what this does 
-    ).add_to(census_map)
+    ).add_to(bub_map)
 
     #map layer three: airbnb per units
     bins_3 = list(census_df["air_e27_per1000"].quantile([0, 0.25, 0.5, 0.75, 1]))
@@ -224,52 +264,19 @@ def census_map(mapdf, tileinfo, attribinfo):
         # columns=["SEZ2011", "field_1"],
         key_on= "properties.SEZ2011",
         # key_on="features.geometry.SEZ2011", #in geojson where to find coordinates, a bit of a guess
-        fill_color='Greens', #find a colorbrewer code
+        fill_color='YlGnBu', #find a colorbrewer code
         fill_opacity=0.7,
         line_opacity=0.2,
         bins=bins_3, #make your own bins
         nan_fill_color='white',
         highlight=True,
-        legend_name= "Airbnb Listings Per 1000 housing Units",   
+        legend_name= "Airbnb Listings Per 1000 housing units",   
         reset=True, #not sure what this does 
-    ).add_to(census_map)
+    ).add_to(bub_map)
 
+    folium.CircleMarker(location=[43.7731, 11.2560], radius=2, color="orange", fill=True, fill_color ="orange", fill_opacity= 1, opacity=1, tooltip="Duomo", popup="Duomo").add_to(bub_map)
 
-    bins_4 = list(florence_df["rent_burden"].quantile([0, 0.25, 0.5, 0.75, 1]))
-    folium.Choropleth(
-        geo_data = florence_geo,
-        # geo_data = geo_census,
-        name="Rent Burden Percent",
-        data = florence_df,
-        # data=census_df,
-        columns=["neighbourhood_cleansed", "rent_burden"],
-        # columns=["SEZ2011", "field_1"],
-        key_on= "feature.properties.neighbourhood",
-        # key_on="features.geometry.SEZ2011", #in geojson where to find coordinates, a bit of a guess
-        fill_color='Purples', #find a colorbrewer code
-        fill_opacity=0.7,
-        line_opacity=0.2,
-        bins=bins_4, #make your own bins
-        nan_fill_color='white',
-        highlight=True,
-        legend_name= "Neighborhood Rent Burden %",   
-        reset=True, #not sure what this does 
-    ).add_to(census_map)
-
-    folium.LayerControl().add_to(census_map)
-    census_map.save('census_map.html')
-    return census_map
-
-
-
-#this map is for the policy landing page template
-def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
-    #create bubble map
-    bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles='CartoDB Positron', attr=attribinfo) 
     folium.LayerControl().add_to(bub_map)
-    # TODO change 1 to yes and had total listings and if in florence and make more maps for commercial and not in florence 
-    for index, location_info in mapdf.iterrows():
-        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill_opacity= 0.2, fill=True, fill_color ="black",  popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(bub_map)
     bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
     return bub_map
 #original_airbnb_map(mapdf, datadf, tileinfo)
@@ -283,11 +290,14 @@ def updated_airbnb_map(mapdf, datadf, inverse_datadf, tileinfo, attribinfo, file
     updated_bub_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles='CartoDB Positron', attr=attribinfo) 
     
     #testing why index is grayed out and why yellow doesn't show in my maps... opacity? 
-    for index, location_info in inverse_datadf.iterrows():
-        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill=True, fill_color ="blue", fill_opacity= 0.2, popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="unaffectedyearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
+    
     for index, location_info in datadf.iterrows():
-        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="yellow", fill=True, fill_color ="yellow", fill_opacity= 0.2, popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="affected yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
+        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="grey", fill=True, fill_color ="grey", fill_opacity= 0.5, opacity=0.5, popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="affected yearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
+    for index, location_info in inverse_datadf.iterrows():
+        folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill=True, fill_color ="blue", fill_opacity= 0.2, opacity=0.2, popup="name: <br>" + str((location_info["name"])) + " hostname: <br> " + str(location_info["host_name"]) + " Commercial Property : <br> " + str(location_info["commercial"]) + " Price: <br>" + str(location_info["price"]), tooltip="unaffectedyearly revenue: " + str(location_info["rounded_revenue_ltm"])).add_to(updated_bub_map)
     folium.LayerControl().add_to(updated_bub_map)
+    folium.CircleMarker(location=[43.7731, 11.2560], radius=2, color="orange", fill=True, fill_color ="orange", fill_opacity= 1, opacity=1, tooltip="Duomo", popup="Duomo").add_to(updated_bub_map)
+
     updated_bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
 
     return updated_bub_map

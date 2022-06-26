@@ -8930,7 +8930,7 @@ textarea.form-control-lg {
   font-size: 1.25rem !important; }
 
 .fs-6 {
-  font-size: 1rem !important; }
+  font-size: .75rem !important; }
 
 .fst-italic {
   font-style: italic !important; }
@@ -14825,11 +14825,12 @@ textarea.form-control-lg {
   .sidebar .link-arrow,
   .sidebar .badge,
   .sidebar .notification-count {
+    font-size: .75rem;
     opacity: 1; }
   .sidebar .sidebar-text-contracted {
     display: none; }
   .sidebar.contracted {
-    max-width: 95px; }
+    max-width: 200px; }
     .sidebar.contracted .sidebar-text,
     .sidebar.contracted .link-arrow,
     .sidebar.contracted .badge {
@@ -14842,7 +14843,7 @@ textarea.form-control-lg {
       width: 18px;
       height: 18px;
       border-radius: 50%;
-      font-size: .7rem;
+      font-size: .5rem;
       padding: .2rem; }
     .sidebar.contracted .nav-item {
       position: relative; }
@@ -14868,7 +14869,7 @@ textarea.form-control-lg {
   overflow-y: hidden; }
 
 .sidebar-heading {
-  font-size: .75rem;
+  font-size: .50rem;
   text-transform: uppercase; }
 
 .user-card {
@@ -14890,7 +14891,7 @@ textarea.form-control-lg {
       margin-left: 260px; } }
 
 .sidebar-toggle {
-  font-size: 1.3rem; }
+  font-size: .5rem; }
   .sidebar-toggle:hover, .sidebar-toggle:focus {
     outline: none;
     box-shadow: none;
@@ -17541,14 +17542,14 @@ label {
 
 .nav-pill-circle.vertical-tab .nav-link-icon i,
 .nav-pill-circle.vertical-tab .nav-link-icon svg {
-  font-size: 1.5rem; }
+  font-size: .5rem; }
 
 .nav-pill-circle.vertical-tab .nav-item:not(:last-child) {
   padding-right: 0; }
 
 .nav-pill-circle .nav-link-icon i,
 .nav-pill-circle .nav-link-icon svg {
-  font-size: 1.25rem;
+  font-size: .5rem;
   margin: 0;
   display: block; }
 
@@ -17569,7 +17570,7 @@ label {
 
 .nav-pill-square .nav-link-icon i,
 .nav-pill-square .nav-link-icon svg {
-  font-size: 1.25rem;
+  font-size: .5rem;
   margin: 0;
   display: block;
   line-height: 50px; }
@@ -18467,7 +18468,7 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6,
 
 p, ol li, ul li, .p {
   font-family: var(--bs-font-sans-serif);
-  font-size: 1rem;
+  font-size: 0.80rem;
   font-weight: 400;
   line-height: 1.6; }
 
@@ -18483,7 +18484,7 @@ a, .text-action {
 
 @media (max-width: 767.98px) {
   .lead {
-    font-size: 1rem; } }
+    font-size: 0.80rem; } }
 
 .line-through {
   -webkit-text-decoration: line-through;
@@ -18527,7 +18528,7 @@ a, .text-action {
         font-size: 1.25rem; } }
 
 .font-small {
-  font-size: 0.875rem;
+  font-size: 0.50rem;
   font-weight: 300; }
 
 .font-base {

@@ -39,5 +39,6 @@ map_3 = getmapstuple[3]
 print("i'm running census spot{}".format(new_date_time))
 census_map = getmapstuple[4]
 #TODO why not just try mkaing the database a global
+#yes that is the answer ^^^^ 
 # df = pd.DataFrame(list(AirbnbListings.objects.all().values('id', 'has_liscense', 'days_rented_ltm', 'rounded_revenue_ltm', 'price', 'name', 'host_id', 'bedrooms', 'many_listings', 'availability_365', 'is_hotel', 'host_name', 'commercial', 'is_entire', 'latitude', 'longitude')))
 # print(df.head())
