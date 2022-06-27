@@ -35,9 +35,10 @@
                   </svg>
                 </span>
                 <!-- add this up top to nav Airbnb Policy Tool -->
-                <span class="mt-1 ms-1 sidebar-text">Home</span>  
+                <span class="mt-1 ms-1 fw-bold">Home</span>  
               </a>
             </li>
+            <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
             <li class="nav-item {% if 'Current Map' in segment %} active {% endif %}">
               <a href="census_map" class="nav-link">
                 <span class="sidebar-icon">
@@ -46,6 +47,7 @@
                 <span class="sidebar-text">Assess the Housing Situation</span>
               </a>
             </li>
+            <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
             <li class="nav-item {% if 'Policy' in segment %} active {% endif %}">
               <!-- <a href="/policy_explorer.html" class="nav-link"> -->
               <span
@@ -70,7 +72,7 @@
               <span class="sidebar-text">All Active Airbnbs</span>
             </a>
         </li>
-        <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
+        <!-- <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li> -->
 
           <li class="nav-item {% if 'policyone' in segment %} active {% endif %}">
               <a class="nav-link" href="policyone">
@@ -93,6 +95,8 @@
         </ul>
       </div>
     </li>
+
+    <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
             <li class="nav-item {% if 'organize' in segment %} active {% endif %}">
               <a class="nav-link" href="organize">
               <span class="sidebar-icon">
