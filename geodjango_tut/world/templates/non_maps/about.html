@@ -1,0 +1,36 @@
+{% extends "../layouts/base.html" %}
+{% block title %}About{% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card bg-yellow-100 border-0 shadow">
+            <div class="card-header d-sm-flex flex-row align-items-center flex-0">
+                <div class="d-block mb-3 mb-sm-0">
+                    <div class="fs-1 fw-normal mb-2">Welcome to the Florence Airbnb Policy Tool</div>
+                    <p class="lead">
+                        This web app tool was built as part of a masters thesis project with the <strong>Economics and Statistics Department</strong> at the <strong>University of Florence (Università degli studi di Firenze)</strong>.
+                        The primary use case is for <strong>policy makers</strong> researching their options when it comes to regulating short term rentals. It however can be very useful as an educational
+                        and advocacy tool for <strong>concerned residents</strong> as well. The <strong>future</strong> hopes for this project is to build out a policy tool for cities and small towns all over the world especially as a <strong>preventative</strong> measure against overtourism. The tool is organized in three main parts based off of three guiding verbs: <strong>Assess, Analyse, Act.</strong> 
+                        <dl>
+                            <dt>First, on the Assess the Housing Situation Tab:</dt>
+                            <dd>You can learn about the current housing situation in Florence which includes census data on population and renters.</dd>
+                            <dt>Then, navigate to the Policy Analyser Tab:</dt>
+                            <dd>Here you can analyse the current airbnb listings in the city of Florence, with no "proposed" policies applied. </dd>
+                            <dd>Then you can click into each of the three proposed policies to see how they would impact the city and its airbnb listings</dd> 
+                            <dd> </dd>
+                            <dt>Finally, on the Take Action Tab:</dt>
+                            <dd>You can get involved, advocate for policies, and connect with a global community of activists.</dd>
+                        </dl>
+                        <div class="fs-4 fw-normal mb-2">Keep in mind that the maps are interactive and clickable!</div>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

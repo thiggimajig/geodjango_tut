@@ -1,0 +1,44 @@
+{% extends "../layouts/base.html" %}
+{% block title %}Policy Analyser: All Active Airbnbs{% endblock %}
+{% block stylesheets %}{% endblock stylesheets %}
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card bg-yellow-100 border-0 shadow">
+            <div class="card-header d-sm-flex flex-row align-items-center flex-0">
+                <div class="d-block mb-3 mb-sm-0">
+                    <div class="fs-5 fw-normal mb-2">Policy Analyser: All Active Airbnbs (No Policy Applied)</div>
+                    <!-- <h2 class="fs-3 fw-extrabold">{{no_permit}}</h2> -->
+                    <div class="small mt-2"> 
+                        <span class="fw-normal me-2">Total Listings:</span>                              
+                        <span class="fas fa-angle-up text-success"></span>                                   
+                        <span class="text-success fw-bold">{{tot_listings}}</span>
+                        <span class="fw-normal me-2">Total Bedrooms:</span>                              
+                        <span class="fas fa-angle-up text-success"></span>                                   
+                        <span class="text-success fw-bold">{{tot_beds}}</span>
+                    </div>
+                    <!-- <div class="small mt-2"> 
+                        <span class="fw-normal me-2">Total Bedrooms on Airbnb:</span>                              
+                        <span class="fas fa-angle-up text-success"></span>                                   
+                        <span class="text-success fw-bold">{{tot_beds}}</span>
+                    </div> -->
+                    <p class="lead">
+                        This map shows the airbnb listing density per population and residential unit for each census tract. For such a wide-spread phenomena, a city like Florence ought to have data on how many tourists are visiting their city, when they are visiting and where exactly they stay.  While there has been some energy recently to create a robust policy framework for short term rentals (ie. Airbnb and VRBO) in <a href=https://www.ft.com/content/2fe06a7c-cb2a-11e9-af46-b09e8bfe60c0> Florence</a>, like other European cities that deal with overtourism, such as Barcelona, Paris and Dublin, currently the only existing law is that each host must register their overnight guests with the police and pay the appropriate taxes. But the city of Florence currently does not have a <strong>data share agreement</strong> with the Airbnb platform, and therefore has no feasible way to be sure if Airbnb hosts are registering according to the law.   
+                        <div class="fst-italic fw-normal mb-2">User Hint: Try toggling on and off the choropleth layers to reveal the dot map of all airbnb listings, then try clicking the dots for more information</div>
+                    </p>
+                </div>
+                <!-- <div class="d-flex ms-auto">
+                    <a href="#" class="btn btn-secondary text-dark btn-sm me-2">Year</a>
+                    <a href="#" class="btn btn-dark btn-sm me-3">Month</a>
+                </div> -->
+            </div>
+            <div class="card-body p-2">
+                <div class="mymap"> {{map | safe}} </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

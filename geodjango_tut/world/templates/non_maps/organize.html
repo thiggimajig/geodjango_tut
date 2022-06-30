@@ -1,0 +1,60 @@
+{% extends "../layouts/base.html" %}
+{% block title %}Take Action{% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card bg-yellow-100 border-0 shadow">
+            <div class="card-header d-sm-flex flex-row align-items-center flex-0">
+                <div class="d-block mb-3 mb-sm-0">
+                    <div class="fs-4 fw-normal mb-2">Taking Action</div>
+                    <p class="lead">
+                        Tap into the global community with <a href=http://insideairbnb.com/resist-airbnb/> Resist Airbnb</a>. Resist Airbnb is an inclusive, self-organizing community where activists and researchers are building a worldwide resistance against predatory housing policy.
+                    </p>
+                    <p class="lead">
+                        Get involved in person by attending the open city hall every monday at 3pm/15:00 CET.
+                        <a class="dropdown-item d-flex align-items-center" href="https://www.google.com/maps/place/Salone+dei+Cinquecento,+Hall+of+the+Five+Hundred/@43.7692916,11.2539148,17z/data=!4m9!1m2!2m1!1sSala+dei+Duecento+in+Palazzo+Vecchio!3m5!1s0x132a5400ef9a9b9d:0x61c41d86f6ca0785!8m2!3d43.769282!4d11.2560561!15sCiRTYWxhIGRlaSBEdWVjZW50byBpbiBQYWxhenpvIFZlY2NoaW9aJiIkc2FsYSBkZWkgZHVlY2VudG8gaW4gcGFsYXp6byB2ZWNjaGlvkgETaGlzdG9yaWNhbF9sYW5kbWFya5oBJENoZERTVWhOTUc5blMwVkpRMEZuU1VSRE1EaHliV2QzUlJBQg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-hearts" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.5 1.246c.832-.855 2.913.642 0 2.566-2.913-1.924-.832-3.421 0-2.566ZM9 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-9 8c0 1 1 1 1 1h10s1 0 1-1-1-4-6-4-6 3-6 4Zm13.5-8.09c1.387-1.425 4.855 1.07 0 4.277-4.854-3.207-1.387-5.702 0-4.276ZM15 2.165c.555-.57 1.942.428 0 1.711-1.942-1.283-.555-2.281 0-1.71Z"/>
+                              </svg>
+                             Open to the Public - Every Monday at 3pm/15:00 CET Sala dei Duecento in Palazzo Vecchio
+                        </a>
+                    </p>
+                    <p class="lead">Get involved from the comfort of your home by emailing or calling your local city council with this data. </p>
+                    <button class="btn btn-gray-800 d-inline-flex align-items-right me-2 dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        Click to Email your Neighborhood City Council Office
+                    </button>
+                    <div class="dropdown-menu dashboard-dropdown dropdown-menu-start mt-2 py-1">
+                        <a class="dropdown-item d-flex align-items-center" href="mailto:q1@comune.fi.it">
+                            <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            Historic Centre | District One | piazza S. Croce 1 | Tel.: 055 2767618
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="mailto:q2@comune.fi.it">
+                            <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            Campo di Marte | District Two | piazza Alberti, 2/a | Tel.: 055 2767831
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="mailto:q3@comune.fi.it">
+                            <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            Gavinana-Galluzzo | District Three | via Tagliamento, 4 | Tel.: 055 2767739
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="mailto:q4@comune.fi.it">
+                            <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            Isolotto-Legnaia | District Four | Via delle Torri, 23 - Villa Vogel | Tel.: 055 2767108
+                        </a>
+                        <a class="dropdown-item d-flex align-items-center" href="mailto:q5@comune.fi.it">
+                            <svg class="dropdown-icon text-gray-400 me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            Rifredi | District Five | via Lambruschini 33 | Tel.: 055 2767020
+                        </a>
+                        </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

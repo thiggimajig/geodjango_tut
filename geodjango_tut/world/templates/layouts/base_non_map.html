@@ -1,0 +1,53 @@
+<!--
+=========================================================
+* Volt Free - Bootstrap 5 Dashboard
+=========================================================
+
+* Product Page: https://themesberg.com/product/admin-dashboard/volt-premium-bootstrap-5-dashboard
+* Copyright 2020 Themesberg (https://www.themesberg.com)
+* License (https://themesberg.com/licensing)
+
+* Designed and coded by https://themesberg.com
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. Please contact us to request a removal.
+
+-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- Primary Meta Tags -->  
+    <title>{% block title %}Airbnb Thesis MVP App Non Map{% endblock %}</title>
+    <!-- static files css  -->
+    <link type="text/css" href="/static/static_volt/assets/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+    <link type="text/css" href="/static/static_volt/assets/vendor/notyf/notyf.min.css" rel="stylesheet">
+    <link type="text/css" href="/static/static_volt/assets/css/volt.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css' %}">  
+    {% block stylesheets %}{% endblock stylesheets %}
+</head>
+<body>
+    <div id= "sidebar">
+        {% block sidebar %}
+        {% include 'includes/sidebar.html' %}  
+        {% endblock %} 
+    </div>
+    <div id="content">
+        #variables I need here: relevant text content
+        {% block content %}{% endblock %}
+    </div>
+    <div id="settings-box">
+        {% include 'includes/settings-box.html' %}
+    </div>
+    <div id="footer">
+        {% include 'includes/footer.html' %}
+    </div>
+    <!-- js file  -->
+    {% include 'includes/scripts.html' %}
+    
+    <!-- Specific Page JS goes HERE  -->
+    {% block javascripts %}{% endblock javascripts %}     
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Assess the Situation: Florence{% endblock %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+<!-- map area -->
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card bg-yellow-100 border-0 shadow">
+            <div class="card-header d-sm-flex flex-row align-items-center flex-0">
+                <div class="d-block mb-3 mb-sm-0">
+                    <div class="fs-5 fw-normal mb-2">The Housing Situation in Florence</div>
+                    <!-- <h2 class="fs-3 fw-extrabold">{{tot_listings}}</h2> -->
+                    <div class="small mt-2"> 
+                        <span class="fw-normal me-2">Total Resident Population: </span>                              
+                        <span class="fas fa-angle-up text-success"></span>                                   
+                        <span class="text-success fw-bold">{{pop_tot}}</span>
+                        <span class="fw-normal me-2">Total Number of Renters: </span>                              
+                        <span class="fas fa-angle-up text-success"></span>                                   
+                        <span class="text-success fw-bold">{{renters_tot}} ({{percentage_rent}}%)</span>
+                        <!-- <span class="fw-normal me-2">Percentage of Population Renting: </span>                              
+                        <span class="fas fa-angle-up text-success"></span>                                   
+                        <span class="text-success fw-bold">{{percentage_rent}}</span> -->
+                        <span class="fw-normal me-2">Total Number of Residential Units:</span>                              
+                        <span class="fas fa-angle-up text-success"></span>                                   
+                        <span class="text-success fw-bold">{{units_tot}}</span>
+                    </div>
+                    <p class="lead">
+                        When assessing a city's housing situation it is important to take a look how many people are renting their homes. This group of residents
+                        is vulnerable compared to those who own their homes since rent can increase between contracts, and the building could be sold
+                        at any time resulting in the <a href=https://www.reuters.com/article/airbnb-lawsuit/san-francisco-sues-landlords-who-evicted-tenants-for-airbnb-idUSL2N0NF1UO20140423>removal of all tenants</a>. These indicators are important when considering the policies needed to protect long term housing stock from being converted into short term rentals
+                        (like those listed on Airbnb or VRBO) because in many cities, it is currently more lucrative for landlords, to rent out units on a short-term basis (ie. a weekend or week) rather than to long term renters.
+                        While there is nothing inherently wrong with short term renting, it is crucial to remember that long term residential housing units are a limited resource, and in many cities it is very difficult, time consuming and costly 
+                        to build new housing units --  either due to beauracracy, labor shortages, or geographic contraints (ie. islands like Manhattan or historically protected cities like Florence). Therefore if a long term unit is converted to short-term vacation rental, this has a direct effect on the supply of long term housing units, and ultimately rent burden and homelessness rates. 
+                        <div class="fst-italic fw-normal mb-2">User Hint: Try toggling on and off the choropleth layers</div>
+                    </p>
+                </div>
+                <!-- <div class="d-flex ms-auto">
+                    <a href="#" class="btn btn-secondary text-dark btn-sm me-2">Year</a>
+                    <a href="#" class="btn btn-dark btn-sm me-3">Month</a>
+                </div> -->
+            </div>
+            <div class="card-body p-2">
+                <div class="mymap"> {{map | safe}} </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

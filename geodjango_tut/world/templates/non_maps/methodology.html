@@ -1,0 +1,31 @@
+{% extends "../layouts/base.html" %}
+{% block title %}Methodology and Data Notes{% endblock %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card bg-yellow-100 border-0 shadow">
+            <div class="card-header d-sm-flex flex-row align-items-center flex-0">
+                <div class="d-block mb-3 mb-sm-0">
+                    <div class="fs-4 fw-normal mb-2">Methodology and Data Notes</div>
+                    <p class="lead">
+                        <dl>
+                            <dt>Airbnb does not provide any public data to aid cities or researchers in understanding the platform's impact </dt>
+                            <dd>All data on Airbnb is from the batch of scraped Airbnb published on <a href="http://insideairbnb.com/get-the-data/">Inside Airbnb</a> on January 2021</dt>
+                            <dd>The Airbnb listings' precise geo location is obscured by Airbnb's privacy buffer, this is especially relevant when considering listings within the same building </dd>
+                            <dd>All data on the city (ie. population, residents, renters, residential units, bedrooms) comes from the 2011 Census Data from <a href="https://www.regione.toscana.it/-/open-data">Open Data Toscana</a> </dd>
+                            <dd>Since income data is considered private, Neighborhood Rent Burden data came from average salaries in Florence </dt>
+                            <dd>Airbnb listings have been filtered to only show active listings which was defined by any listing who has had at least one review in the past 12 months </dd> 
+                            <dd>The style of this dashboard was created by <a href="https://django-volt-dashboard.appseed-srv1.com/dashboard.html">Volt</a> bootstrap templates unless otherwise specified.</dd>
+                        </dl>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
