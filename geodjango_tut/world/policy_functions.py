@@ -238,7 +238,7 @@ def census_map(mapdf, tileinfo, attribinfo):
 
 
     folium.LayerControl().add_to(census_map)
-    census_map.save('census_map.html')
+    # census_map.save('census_map.html')
     return census_map
 
 
@@ -373,7 +373,7 @@ def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
     folium.CircleMarker(location=[43.7731, 11.2560], radius=2, color="orange", fill=True, fill_color ="orange", fill_opacity= 1, opacity=1, tooltip="Duomo", popup="Duomo").add_to(bub_map)
 
     folium.LayerControl().add_to(bub_map)
-    bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
+    # bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
     return bub_map
 #original_airbnb_map(mapdf, datadf, tileinfo)
 # original_airbnb_map(df0, esri, attrib, 'original_airbnb_map')
@@ -526,7 +526,7 @@ def updated_airbnb_map(mapdf, datadf, inverse_datadf, tileinfo, attribinfo, file
     folium.LayerControl().add_to(updated_bub_map)
     folium.CircleMarker(location=[43.7731, 11.2560], radius=2, color="orange", fill=True, fill_color ="orange", fill_opacity= 1, opacity=1, tooltip="Duomo", popup="Duomo").add_to(updated_bub_map)
 
-    updated_bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
+    # updated_bub_map.save(data_path + '/Out_Map/' + filetitle + '.html')
 
     return updated_bub_map
 # updated_airbnb_map(df0, policy1_df0, policy1_df0_inverse, esri, attrib, 'policy4_df0_funct')
