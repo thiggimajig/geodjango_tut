@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 from operator import and_
-import geojson
+# import geojson
 # import geopandas
 import pandas as pd
-import numpy as np
-import statistics as st
-import matplotlib as plt
+# import numpy as np
+# import statistics as st
+# import matplotlib as plt
 import folium
-from folium.features import CustomIcon
-import csv
-import geopandas
+# from folium.features import CustomIcon
+# import csv
+# import geopandas
 from IPython.display import display, HTML
-from pathlib import Path 
+# from pathlib import Path 
 import os
 import sys
 from .models import AirbnbListings
@@ -312,7 +312,7 @@ def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
             <div id="listingCensusSection" class= "listingSection">
             </div>
             <p class="listingSection">click listing on map to "pin" details</p>
-            <p class="listingSection">(this style was created by <a href="http://insideairbnb.com/">Inside Airbnb</a>)</p>
+            <p class="listingSection">the style for this popup was created by <a href="http://insideairbnb.com/">Inside Airbnb</a></p>
 
         </div>
         </html>
@@ -450,7 +450,7 @@ def updated_airbnb_map(mapdf, datadf, inverse_datadf, tileinfo, attribinfo, file
             <div id="listingCensusSection" class= "listingSection">
             </div>
             <p class="listingSection">click listing on map to "pin" details</p>
-            <p class="listingSection">this style was created by <a href="http://insideairbnb.com/">Inside Airbnb</a></p>
+            <p class="listingSection">the style for this popup was created by <a href="http://insideairbnb.com/">Inside Airbnb</a></p>
         </div>
         </html>
             """  

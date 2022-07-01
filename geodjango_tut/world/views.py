@@ -5,10 +5,10 @@ from django.views import generic
 from django.contrib.gis.geos import fromstr, Point
 from django.contrib.gis.db.models.functions import Distance
 #not sure but having issues relatively importing.. .maybe when server is down?
-from .models import AirbnbListings 
-from django.http import HttpResponse,HttpResponseRedirect
+# from .models import AirbnbListings 
+# from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-import folium
+# import folium
 import sys
 import os
 function_path = os.path.abspath('/Users/stateofplace/new_codes/geodjango_tut/geodjango/world/')
