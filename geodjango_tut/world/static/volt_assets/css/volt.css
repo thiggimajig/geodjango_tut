@@ -244,8 +244,8 @@
   display: flex; }
 
 .ct-chart-pie .ct-label,
-.ct-chart-donut .ct-label {
-  dominant-baseline: central; }
+/* .ct-chart-donut .ct-label {
+  dominant-baseline: central; } */
 
 .ct-label.ct-horizontal.ct-start {
   align-items: flex-end;
@@ -2944,8 +2944,8 @@ textarea.form-control-lg {
   border: 1px solid #D1D5DB;
   -webkit-appearance: none;
           appearance: none;
-  -webkit-print-color-adjust: exact;
-          color-adjust: exact;
+  /* -webkit-print-color-adjust: exact;
+          color-adjust: exact; */
   transition: background-color 0.2s ease-in-out, background-position 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
   @media (prefers-reduced-motion: reduce) {
     .form-check-input {

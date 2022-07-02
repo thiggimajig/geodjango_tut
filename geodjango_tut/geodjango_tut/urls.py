@@ -32,11 +32,11 @@ urlpatterns = [
     #nonmap
     # path('quiz', quiz, name='quiz'),
     path('terms', terms, name='terms'), #this is glossary of terms and frequently asked qustions myths 
-    path('about', about, name='about'), #this is aout this project explaining my program my interest my thesis 
+    path('', about, name='about'), #this is aout this project explaining my program my interest my thesis 
     path('organize', organize, name='organize'), #this will have a page explaining global movement, and link to IA
     path('methodology', method, name ='method'), #this will link to calculations on fees, taxes, occupancy, days, revenue, muit listing, scraped data
     #random ones
-    path('', about, name='index'), #for the sake of speed making this function about for now should change to allpoints later OR an explanatory page 
+    # path('', about, name='index'), #for the sake of speed making this function about for now should change to allpoints later OR an explanatory page 
     path('admin/', admin.site.urls)
     # path('timelapse', timelapse, name='timelapse'),
     # listings/ (can be whatever you want the url to be), listings_map (function name in view), 

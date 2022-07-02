@@ -25,9 +25,13 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-6y(l&-t@xw6l7zw@^!^5ge^3hv!#q8z1@s=ou_(80xw0a08li_'
-with open('/Users/stateofplace/new_codes/geodjango_tut/secret_key.txt') as f:
+#os.path.join(BASE_DIR, 'staticfiles'
+with open(BASE_DIR + '/secret_key.txt') as f:
     SECRET_KEY = f.read().strip()
+
+# with open('../secret_key.txt') as f:
+#     SECRET_KEY = f.read().strip()
+    
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = False
@@ -35,11 +39,15 @@ DEBUG = False
 ALLOWED_HOSTS = [
     '80','localhost',
     'http://127.0.0.1:8000/',
+    'http://127.0.0.1:8080/',
+    '127.0.0.1:8080/',
+    '127.0.0.1:8000/',
   '127.0.0.1',
   '111.222.333.444',
   'http://str-airbnb-policy-florence.herokuapp.com/',
   'www.str-airbnb-policy-florence.herokuapp.com',
   '.str-airbnb-policy-florence.herokuapp.com',
+  'https://str-airbnb-policy-florence.herokuapp.com/'
   '*'
 ]
 
@@ -101,15 +109,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'geodjango_tut.wsgi.application'
 
 # SECURE_HSTS_SECONDS = True #If your entire site is served only over SSL, you may want to consider setting a value and enabling HTTP Strict Transport Security. Be sure to read the documentation first; enabling HSTS carelessly can cause serious, irreversible problems. 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False #True when in production or if want to allow non ssl 
 #For deployment no cookie 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-with open('/Users/stateofplace/new_codes/geodjango_tut/db_pass.txt') as f:
+#should add these to gitignore
+# /Users/stateofplace/new_codes/geodjango_tut/
+with open(BASE_DIR +'/db_pass.txt') as f:
     PASSWORD = f.read().strip()
 
 DATABASES = {
@@ -118,7 +127,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'gis',
         'USER': 'taylor',
-        'PASSWORD': 'password',
+        'PASSWORD': PASSWORD,
         'HOST': 'localhost',
         'PORT': '5432'
      }
@@ -162,6 +171,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+#maybe change DISABLE_COLLECTSTATIC to not be set?
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

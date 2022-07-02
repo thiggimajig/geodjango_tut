@@ -1,5 +1,5 @@
       <nav class="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
-          <a class="navbar-brand me-lg-5" href="/"> 
+          <a class="navbar-brand me-lg-5" href="{% url 'about' %}"> 
             <!-- <img class="navbar-brand-dark" src="/geodjango/world/static/assets/img/home-love-svgrepo-com.svg" alt="pic"/> -->
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-heart" viewBox="0 0 16 16">
               <path d="M8 6.982C9.664 5.309 13.825 8.236 8 12 2.175 8.236 6.336 5.309 8 6.982Z"/>
@@ -27,7 +27,7 @@
           </div>
           <ul class="nav flex-column pt-3 pt-md-0">
             <li class="nav-item">
-              <a href="/" class="nav-link d-flex align-items-center">
+              <a href="{% url 'about' %}" class="nav-link d-flex align-items-center">
                 <span class="sidebar-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-heart" viewBox="0 0 16 16">
                     <path d="M8 6.982C9.664 5.309 13.825 8.236 8 12 2.175 8.236 6.336 5.309 8 6.982Z"/>
@@ -40,7 +40,7 @@
             </li>
             <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
             <li class="nav-item {% if 'Current Map' in segment %} active {% endif %}">
-              <a href="florence-housing-census" class="nav-link">
+              <a href="{% url 'florence-housing-census' %}" class="nav-link">
                 <span class="sidebar-icon">
                   <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z"></path><path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd"></path></svg>
                 </span>
@@ -68,26 +68,26 @@
         id="submenu-app" aria-expanded="false">
         <ul class="flex-column nav">
           <li class="nav-item {% if 'policyexplorer' in segment %} active {% endif %}">
-            <a class="nav-link" href="all-airbnbs">
+            <a class="nav-link" href="{% url 'all-airbnbs' %}">
               <span class="sidebar-text">All Active Airbnbs</span>
             </a>
         </li>
         <!-- <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li> -->
 
           <li class="nav-item {% if 'policyone' in segment %} active {% endif %}">
-              <a class="nav-link" href="policy-unlicensed-airbnbs">
+              <a class="nav-link" href="{% url 'policy-unlicensed-airbnbs' %}">
                 <!-- Policy One: Licenses Mandatory -->
                 <span class="sidebar-text">Unlicensed Listings Prohibited</span>
               </a>
           </li>
           <li class="nav-item {% if 'policytwo' in segment %} active {% endif %}">
-            <a class="nav-link" href="policy-entire-airbnbs">
+            <a class="nav-link" href="{% url 'policy-entire-airbnbs' %}">
               <!-- Policy Two: Entire Apartments Prohibited -->
               <span class="sidebar-text">Entire Listings Prohibited</span>
             </a>
           </li>
           <li class="nav-item {% if 'policythree' in segment %} active {% endif %}">
-            <a class="nav-link" href="policy-multiple-airbnbs">
+            <a class="nav-link" href="{% url 'policy-multiple-airbnbs' %}">
               <!-- Policy Three: Mutliple Listings Prohibited -->
               <span class="sidebar-text">Multiple Listings Prohibited</span>
             </a>
@@ -98,7 +98,7 @@
 
     <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
             <li class="nav-item {% if 'organize' in segment %} active {% endif %}">
-              <a class="nav-link" href="organize">
+              <a class="nav-link" href="{% url 'organize' %}">
               <span class="sidebar-icon">
                 <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path></svg>
               </span>
