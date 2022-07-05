@@ -17,6 +17,7 @@ import os
 #BASE_DIR = Path(__file__).resolve().parent.parent
 #from RAJVEL plain english
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE_ID = 1
 #added from stack https://stackoverflow.com/questions/1926049/django-templatedoesnotexist 
 # SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
@@ -118,8 +119,8 @@ SESSION_COOKIE_SECURE = True
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 #should add these to gitignore
 # /Users/stateofplace/new_codes/geodjango_tut/
-with open(BASE_DIR +'/db_pass.txt') as f:
-    PASSWORD = f.read().strip()
+# with open(BASE_DIR +'/db_pass.txt') as f:
+#     PASSWORD = f.read().strip()
 
 DATABASES = {
     'default': {
@@ -127,7 +128,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'gis',
         'USER': 'taylor',
-        'PASSWORD': PASSWORD,
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432'
      }
@@ -171,7 +172,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
 #maybe change DISABLE_COLLECTSTATIC to not be set?
 
@@ -189,4 +191,6 @@ NOSE_ARGS = [
     '--cover-package=foo,bar',
 ]
 
+
+# Configure Django App for Heroku.
 django_heroku.settings(locals())

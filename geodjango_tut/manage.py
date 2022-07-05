@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+
 import os
 import sys
-
+# sys.path.append('/Users/stateofplace/new_codes/virtual_environments/fi_str_heroku/lib/python3.9/site-packages')
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'geodjango_tut.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'geodjango_tut')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
