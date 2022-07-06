@@ -17,6 +17,7 @@ import os
 #BASE_DIR = Path(__file__).resolve().parent.parent
 #from RAJVEL plain english
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SITE_ID = 1
 #added from stack https://stackoverflow.com/questions/1926049/django-templatedoesnotexist 
@@ -34,8 +35,8 @@ with open(BASE_DIR + '/secret_key.txt') as f:
 #     SECRET_KEY = f.read().strip()
     
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = [
     '80','localhost',
@@ -66,7 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'django.contrib.sites',
-    # 'world',
+    'world',
     'world.apps.WorldConfig',
     'csvimport.app.CSVImportConf',
     'coverage',
@@ -75,7 +76,7 @@ INSTALLED_APPS = [
 
 ]
 
-# DJANGO_SETTINGS_MODULE = geodjango.settings
+DJANGO_SETTINGS_MODULE = 'geodjango_tut.settings'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -115,7 +116,7 @@ SECURE_SSL_REDIRECT = False #True when in production or if want to allow non ssl
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
-# Database
+# Database 
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 #should add these to gitignore
 # /Users/stateofplace/new_codes/geodjango_tut/
@@ -128,7 +129,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'gis',
         'USER': 'taylor',
-        'PASSWORD': 'password',
+        'PASSWORD': os.environ['password'],
         'HOST': 'localhost',
         'PORT': '5432'
      }

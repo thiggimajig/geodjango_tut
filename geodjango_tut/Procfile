@@ -1,4 +1,2 @@
-
-release: python manage.py migrate
 web: gunicorn geodjango_tut.wsgi
-web: python manage.py runserver 0.0.0.0:$PORT --noreload
+
