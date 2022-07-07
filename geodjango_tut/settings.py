@@ -193,5 +193,5 @@ NOSE_ARGS = [
 ]
 
 
-# Configure Django App for Heroku.
+# Configure Django App for Heroku. should help handle collectstatic
 django_heroku.settings(locals())
