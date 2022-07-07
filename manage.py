@@ -3,7 +3,7 @@
 
 import os
 import sys
-# sys.path.append('/Users/stateofplace/new_codes/virtual_environments/fi_str_heroku/lib/python3.9/site-packages/django')
+
 #use os variable enviro instead of path written out 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + 'lib/python3.9/site-packages/django')

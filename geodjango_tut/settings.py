@@ -28,15 +28,15 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #os.path.join(BASE_DIR, 'staticfiles'
-with open(BASE_DIR + '/secret_key.txt') as f:
-    SECRET_KEY = f.read().strip()
+
+SECRET_KEY = os.environ['secret_key']
 
 # with open('../secret_key.txt') as f:
 #     SECRET_KEY = f.read().strip()
     
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+# DEBUG = True
+DEBUG = False
 # ALLOWED_HOSTS = []
 ALLOWED_HOSTS = [
     '80','localhost',
@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'django.contrib.sites',
     'world',
-    'world.apps.WorldConfig',
+    # 'world.apps.WorldConfig',
     'csvimport.app.CSVImportConf',
     'coverage',
     'django_nose',
