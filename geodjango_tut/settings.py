@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import django_heroku
+
 from pathlib import Path
 import os
 
@@ -35,23 +36,23 @@ SECRET_KEY = os.environ['secret_key']
 #     SECRET_KEY = f.read().strip()
     
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = [
-    '80','localhost',
-    'http://127.0.0.1:8000/',
-    'http://127.0.0.1:8080/',
-    '127.0.0.1:8080/',
-    '127.0.0.1:8000/',
-  '127.0.0.1',
-  '111.222.333.444',
-  'http://str-airbnb-policy-florence.herokuapp.com/',
-  'www.str-airbnb-policy-florence.herokuapp.com',
-  '.str-airbnb-policy-florence.herokuapp.com',
-  'https://str-airbnb-policy-florence.herokuapp.com/'
-  '*'
-]
+# ALLOWED_HOSTS = [
+#     '80','localhost',
+#     'http://127.0.0.1:8000/',
+#     'http://127.0.0.1:8080/',
+#     '127.0.0.1:8080/',
+#     '127.0.0.1:8000/',
+#   '127.0.0.1',
+#   '111.222.333.444',
+#   'http://str-airbnb-policy-florence.herokuapp.com/',
+#   'www.str-airbnb-policy-florence.herokuapp.com',
+#   '.str-airbnb-policy-florence.herokuapp.com',
+#   'https://str-airbnb-policy-florence.herokuapp.com/'
+#   '*'
+# ]
 
 
 
