@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import django_heroku
-
 from pathlib import Path
 import os
 
+# import sys
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
 #from RAJVEL plain english
@@ -36,9 +36,9 @@ SECRET_KEY = os.environ['secret_key']
 #     SECRET_KEY = f.read().strip()
     
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
-# ALLOWED_HOSTS = []
+# DEBUG = True
+DEBUG = False
+ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = [
 #     '80','localhost',
 #     'http://127.0.0.1:8000/',
@@ -69,7 +69,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'django.contrib.sites',
     'world',
-    # 'world.apps.WorldConfig',
+    'world.apps.WorldConfig',
     'csvimport.app.CSVImportConf',
     'coverage',
     'django_nose',
@@ -130,7 +130,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'gis',
         'USER': 'taylor',
-        'PASSWORD': os.environ['password'],
+        'PASSWORD': os.environ['password'], #os.environ['password'] need to make sure this works even if using locally
         'HOST': 'localhost',
         'PORT': '5432'
      }
