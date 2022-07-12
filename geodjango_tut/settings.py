@@ -67,8 +67,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'django.contrib.sites',
-    # 'world', #not sure which one this or below
-    'world.apps.WorldConfig',
+    'world', #not sure which one this or below
+    # 'world.apps.WorldConfig',
     # 'csvimport.app.CSVImportConf', #remove because causing errors possible python versiion errors... signal.py
     'coverage',
     'django_nose',
