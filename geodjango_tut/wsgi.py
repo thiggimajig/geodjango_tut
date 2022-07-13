@@ -12,5 +12,6 @@ import os
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'geodjango_tut.settings')
+# os.environ['DJANGO_SETTINGS_MODULE'] = 'geodjango_tut.settings' #this is from documentation
 
 application = get_wsgi_application()

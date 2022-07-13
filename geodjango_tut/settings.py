@@ -32,7 +32,7 @@ SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 #os.path.join(BASE_DIR, 'staticfiles'
 
-SECRET_KEY = os.environ['secret_key']
+SECRET_KEY = os.environ['secret_key'] #need to add it to local bash... just had it added to heroku
 
 # with open('../secret_key.txt') as f:
 #     SECRET_KEY = f.read().strip()
@@ -74,9 +74,9 @@ INSTALLED_APPS = [
     'world', #not sure which one this or below
     # 'world.apps.WorldConfig',
     # 'csvimport.app.CSVImportConf', #remove because causing errors possible python versiion errors... signal.py
-    'coverage',
-    'django_nose',
-    'freeze' #couldn't do this in the end because needed django version 1.6.5 but when we deprecated all sorts of issues happened and couldn't run the script from freeze
+    # 'coverage',
+    # 'django_nose',
+    # 'freeze' #couldn't do this in the end because needed django version 1.6.5 but when we deprecated all sorts of issues happened and couldn't run the script from freeze
 
 ]
 
