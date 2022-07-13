@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 import sys
 
-sys.path.insert(0, '/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut')
+# sys.path.insert(0, '/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut')
 # sys.path.append(os.path.join(os.path.dirname(__file__), 'geodjango_tut.settings'))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
