@@ -74,9 +74,9 @@ INSTALLED_APPS = [
     'world', #not sure which one this or below
     # 'world.apps.WorldConfig',
     # 'csvimport.app.CSVImportConf', #remove because causing errors possible python versiion errors... signal.py
-    # 'coverage',
-    # 'django_nose',
-    # 'freeze' #couldn't do this in the end because needed django version 1.6.5 but when we deprecated all sorts of issues happened and couldn't run the script from freeze
+    'coverage',
+    'django_nose',
+    'freeze' #couldn't do this in the end because needed django version 1.6.5 but when we deprecated all sorts of issues happened and couldn't run the script from freeze
 
 ]
 
