@@ -12,8 +12,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import django_heroku
 from pathlib import Path
 import os
+import sys
 
-# import sys
+sys.path.insert(0, '/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut')
+# sys.path.append(os.path.join(os.path.dirname(__file__), 'geodjango_tut.settings'))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
 #from RAJVEL plain english
@@ -78,7 +80,7 @@ INSTALLED_APPS = [
 
 ]
 
-DJANGO_SETTINGS_MODULE = 'geodjango_tut.settings'
+DJANGO_SETTINGS_MODULE = 'geodjango_tut.settings' # add to import search path
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
