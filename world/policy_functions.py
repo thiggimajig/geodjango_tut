@@ -55,7 +55,7 @@ def clean_dataframe(s):
 # df0 = clean_dataframe(df)
 
 def load_census_csv_data():
-    df_census = pd.read_csv("/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut/csv/R09_fi_app.csv")
+    df_census = pd.read_csv("/Users/stateofplace/new_codes/geodjango_tut/csv/R09_fi_app.csv")
     population = df_census.loc[:, 'P1']
     buildings = df_census.loc[:,'E3']
     units = df_census.loc[:, 'E27']
@@ -180,15 +180,15 @@ def get_updated_stats():
 #here we can overlay the census choropleth for the orignal map
 #this map is for the census assess non airbnb template
 def census_map(mapdf, tileinfo, attribinfo):
-    census_geo = "/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut/csv/joined_census_neigh_dj.geojson"
-    census_data = "/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut/csv/num_air_pop_census_dj.csv"
-    census_data2 = "/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut/csv/map1_4_census_by_pop_dj.csv"
+    census_geo = "/Users/stateofplace/new_codes/geodjango_tut/csv/joined_census_neigh_dj.geojson"
+    census_data = "/Users/stateofplace/new_codes/geodjango_tut/csv/num_air_pop_census_dj.csv"
+    census_data2 = "/Users/stateofplace/new_codes/geodjango_tut/csv/map1_4_census_by_pop_dj.csv"
     census_df = pd.read_csv(census_data)
     census_df2 = pd.read_csv(census_data2)
     #insert neighbhorhood 
     #map layer four: neighborhood rent burden
-    florence_geo = "/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut/csv/florence_neighbourhoods_dj.geojson"
-    florence_data = "/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut/csv/rent_burden_neigh_dj.csv"
+    florence_geo = "/Users/stateofplace/new_codes/geodjango_tut/csv/florence_neighbourhoods_dj.geojson"
+    florence_data = "/Users/stateofplace/new_codes/geodjango_tut/csv/rent_burden_neigh_dj.csv"
     florence_df = pd.read_csv(florence_data)
 
     census_map = folium.Map(location=[mapdf.latitude.mean(),mapdf.longitude.mean()], zoom_start=12, control_scale=True, tiles='CartoDB Positron', attr=attribinfo)
@@ -320,8 +320,8 @@ def original_airbnb_map(mapdf, tileinfo, attribinfo, filetitle):
         folium.CircleMarker([location_info["latitude"],location_info["longitude"]], radius=2, color="blue", fill_opacity= 0.5, opacity=0.5, fill=True, fill_color ="blue", popup=html, tooltip=html).add_to(bub_map)
         # print(location_info["host_id"])
 
-    census_geo = "/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut/csv/joined_census_neigh_dj.geojson"
-    census_data = "/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut/csv/num_air_pop_census_dj.csv"
+    census_geo = "/Users/stateofplace/new_codes/geodjango_tut/csv/joined_census_neigh_dj.geojson"
+    census_data = "/Users/stateofplace/new_codes/geodjango_tut/csv/num_air_pop_census_dj.csv"
     census_df = pd.read_csv(census_data)
 
     bins_2 = list(census_df["cont_per_1000"].quantile([0, 0.25, 0.5, 0.75, 1]))
