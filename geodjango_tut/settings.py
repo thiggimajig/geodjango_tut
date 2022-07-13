@@ -201,6 +201,10 @@ NOSE_ARGS = [
     '--cover-package=foo,bar',
 ]
 
+#help with migrating data on local postgres to heroku postgres
+import dj_database_url
+DATABASES['default'] = dj_database_url.config()
+DATABASES['default']['ENGINE'] = "django.contrib.gis.db.backends.postgis"
 
 # Configure Django App for Heroku. should help handle collectstatic
 django_heroku.settings(locals())
