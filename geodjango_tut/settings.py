@@ -14,6 +14,10 @@ from pathlib import Path
 import os
 import sys
 
+#might help with core exception errors https://stackoverflow.com/questions/67056517/django-3-2-exception-django-core-exceptions-improperlyconfigured
+#from django.apps import WorldConfig
+# WorldConfig.default = False
+
 # sys.path.insert(0, '/Users/stateofplace/new_codes/geodjango_tut/geodjango_tut')
 # sys.path.append(os.path.join(os.path.dirname(__file__), 'geodjango_tut.settings'))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,11 +25,13 @@ import sys
 #from RAJVEL plain english
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__)) #os.path.dirname(os.path.dirname(__file__)) #just switched this with SETTINGS_PATH might need to update other things no just switched back because root is mysite/mysite/
 SITE_ID = 1
 #added from stack https://stackoverflow.com/questions/1926049/django-templatedoesnotexist 
 # SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
-SETTINGS_PATH = os.path.dirname(os.path.dirname(__file__))
+
+SETTINGS_PATH = os.path.dirname(os.path.abspath(__file__))
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
@@ -37,26 +43,25 @@ SECRET_KEY = os.environ['secret_key'] #need to add it to local bash... just had 
 # with open('../secret_key.txt') as f:
 #     SECRET_KEY = f.read().strip()
     
+
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    '80','localhost',
+    'http://127.0.0.1:8000/',
+    'http://127.0.0.1:8080/',
+    '127.0.0.1:8080/',
+    '127.0.0.1:8000/',
+  '127.0.0.1',
+  '111.222.333.444',
+  'http://str-airbnb-policy-florence.herokuapp.com/',
+  'www.str-airbnb-policy-florence.herokuapp.com',
+  '.str-airbnb-policy-florence.herokuapp.com',
+  'https://str-airbnb-policy-florence.herokuapp.com/'
+  '*'
+]
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = False
-
-ALLOWED_HOSTS = ['*']
-# ALLOWED_HOSTS = [
-#     '80','localhost',
-#     'http://127.0.0.1:8000/',
-#     'http://127.0.0.1:8080/',
-#     '127.0.0.1:8080/',
-#     '127.0.0.1:8000/',
-#   '127.0.0.1',
-#   '111.222.333.444',
-#   'http://str-airbnb-policy-florence.herokuapp.com/',
-#   'www.str-airbnb-policy-florence.herokuapp.com',
-#   '.str-airbnb-policy-florence.herokuapp.com',
-#   'https://str-airbnb-policy-florence.herokuapp.com/'
-#   '*'
-# ]
-
 
 
 # Application definition
@@ -99,7 +104,7 @@ TEMPLATES = [
         ## Find templates in the same folder as settings.py.
         #https://stackoverflow.com/questions/1926049/django-templatedoesnotexist
         # 'DIRS': [os.path.join(SETTINGS_PATH, 'templates')],
-        'DIRS': [SETTINGS_PATH + 'templates'], #BASE_DIR + '/templates/' from RAJVEL example
+        'DIRS': [SETTINGS_PATH + '/templates'], #BASE_DIR + '/templates/' from RAJVEL example
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -178,7 +183,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles') 
 
 #maybe change DISABLE_COLLECTSTATIC to not be set?
 
