@@ -44,21 +44,21 @@ SECRET_KEY = os.environ['secret_key'] #need to add it to local bash... just had 
 #     SECRET_KEY = f.read().strip()
     
 
-# ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = [
-    '80','localhost',
-    'http://127.0.0.1:8000/',
-    'http://127.0.0.1:8080/',
-    '127.0.0.1:8080/',
-    '127.0.0.1:8000/',
-  '127.0.0.1',
-  '111.222.333.444',
-  'http://str-airbnb-policy-florence.herokuapp.com/',
-  'www.str-airbnb-policy-florence.herokuapp.com',
-  '.str-airbnb-policy-florence.herokuapp.com',
-  'https://str-airbnb-policy-florence.herokuapp.com/'
-  '*'
-]
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = [
+#     '80','localhost',
+#     'http://127.0.0.1:8000/',
+#     'http://127.0.0.1:8080/',
+#     '127.0.0.1:8080/',
+#     '127.0.0.1:8000/',
+#   '127.0.0.1',
+#   '111.222.333.444',
+#   'http://str-airbnb-policy-florence.herokuapp.com/',
+#   'www.str-airbnb-policy-florence.herokuapp.com',
+#   '.str-airbnb-policy-florence.herokuapp.com',
+#   'https://str-airbnb-policy-florence.herokuapp.com/'
+#   '*'
+# ]
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = False
