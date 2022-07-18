@@ -13,7 +13,7 @@ import django_heroku
 from pathlib import Path
 import os
 import sys
-
+import dj_database_url
 #might help with core exception errors https://stackoverflow.com/questions/67056517/django-3-2-exception-django-core-exceptions-improperlyconfigured
 #from django.apps import WorldConfig
 # WorldConfig.default = False
@@ -60,8 +60,8 @@ ALLOWED_HOSTS = ['*']
 #   '*'
 # ]
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 
 # Application definition
@@ -137,7 +137,7 @@ DATABASES = {
         # 'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'gis',
-        'USER': 'taylor',
+        'USER': 'taylor', #taylor okay we know it is pulling from this file! 
         'PASSWORD': os.environ['password'], #os.environ['password'] need to make sure this works even if using locally
         'HOST': 'localhost',
         'PORT': '5432'
@@ -201,10 +201,10 @@ NOSE_ARGS = [
     '--cover-package=foo,bar',
 ]
 
-#help with migrating data on local postgres to heroku postgres
-import dj_database_url
-DATABASES['default'] = dj_database_url.config()
+#help with migrating data on local postgres to heroku postgres - this screws up things locally so commenting out for now 
+# import dj_database_url
+# DATABASES['default'] = dj_database_url.config()
 DATABASES['default']['ENGINE'] = "django.contrib.gis.db.backends.postgis"
 
 # Configure Django App for Heroku. should help handle collectstatic
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
